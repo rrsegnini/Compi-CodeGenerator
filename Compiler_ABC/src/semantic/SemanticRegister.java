@@ -13,7 +13,7 @@ public class SemanticRegister {
     
     private SR_Name descrp;
     private String value;
-    private String type;
+    private ValueType type;
     private String label1;
     private String label2;
 
@@ -33,7 +33,7 @@ public class SemanticRegister {
      * @param value  SR token being stored
      * @param type   SR type of SR_DO
      */
-    public SemanticRegister(SR_Name descrp, String value, String type) {
+    public SemanticRegister(SR_Name descrp, String value, ValueType type) {
         this.descrp = descrp;
         this.value = value;
         this.type = type;
@@ -48,11 +48,11 @@ public class SemanticRegister {
         this.value = valor;
     }
 
-    public String getType() {
+    public ValueType getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(ValueType type) {
         this.type = type;
     }
     
