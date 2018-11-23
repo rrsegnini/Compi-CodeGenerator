@@ -5,24 +5,51 @@
  */
 package semantic;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author danielalvarado
  */
-public class SemanticStack<SR> implements Stack {
+public class SemanticStack<SemanticRegister> implements Stack {
+    
+    ArrayList<SemanticRegister> storedItems = new ArrayList<>();
+   
 
     @Override
     public boolean push(Object value) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        boolean v = false;
+        if (storedItems.isEmpty()) {
+            storedItems.add((SemanticRegister) value);
+      
+            v = true;
+        } else {
+            storedItems.add((SemanticRegister) value);
+     
+        }
+        
+        return v;
     }
 
     @Override
-    public Object pop() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public SemanticRegister pop() {
+        SemanticRegister semanticRegister = null;
+        int size = storedItems.size();
+        if (size != 0)
+            semanticRegister =  storedItems.remove(size-1);
+        
+        return semanticRegister;
     }
 
     @Override
-    public Object search() {
+    public SemanticRegister search(String descrp) {
+        
+        for (int i = 0; i < storedItems.size(); i++) {
+            
+            SemanticRegister sr = storedItems.get(i); 
+           
+        }
+        
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

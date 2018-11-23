@@ -16,7 +16,7 @@ public interface Stack<SR> {
     
     SR pop();
     
-    SR search();
+    SR search(String descrp);
     
     boolean contains();
     

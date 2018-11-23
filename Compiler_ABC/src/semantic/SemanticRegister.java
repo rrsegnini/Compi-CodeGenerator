@@ -11,4 +11,15 @@ package semantic;
  */
 public class SemanticRegister {
     
+    String descrp;
+
+    public String getDescrp() {
+        return descrp;
+    }
+
+    public void setDescrp(String descrp) {
+        this.descrp = descrp;
+    }
+    
+    
 }
