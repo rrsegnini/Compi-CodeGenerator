@@ -32,8 +32,8 @@ public class SemanticActions {
     }
     
     public void rememberID(String _token) {
-        SemanticRegister SR_Type = new SemanticRegister(SR_Name.ID,_token);
-        stack.push(SR_Type);
+        SemanticRegister SR_Id = new SemanticRegister(SR_Name.ID,_token);
+        stack.push(SR_Id);
     }
     
     public void insertST() {
@@ -50,29 +50,40 @@ public class SemanticActions {
     ////////////////////////////////////////////////////////////////////////////
     
     public void rememberConst(String _token) {
-        SemanticRegister SR_Type = new SemanticRegister(SR_Name.DATA_OBJECT,_token,ValueType.CONST);
-        stack.push(SR_Type); 
+        SemanticRegister SR_Const = new SemanticRegister(SR_Name.DATA_OBJECT,_token,ValueType.CONST);
+        stack.push(SR_Const); 
     }
     
     public void rememberVariable(String _token) {
         // VERIFY IN SYMBOL'S TABLE
-        SemanticRegister SR_Type = new SemanticRegister(SR_Name.DATA_OBJECT,_token,ValueType.VAR);
-        stack.push(SR_Type);
+        SemanticRegister SR_Var = new SemanticRegister(SR_Name.DATA_OBJECT,_token,ValueType.VAR);
+        stack.push(SR_Var);
     }
     
     public void rememberOperator(String _token) {
-        SemanticRegister SR_Type = new SemanticRegister(SR_Name.OPERATOR,_token);
-        stack.push(SR_Type);
+        SemanticRegister SR_Op = new SemanticRegister(SR_Name.OPERATOR,_token);
+        stack.push(SR_Op);
     }
     
     public void binaryEvaluation() {
-    SemanticRegister RS_DO1 = this.stack.pop();
-    SemanticRegister RS_OP = this.stack.pop();
-    SemanticRegister RS_DO2 = this.stack.pop();
-    
-    //verify types in SYMBOL'S TABLE
-    
-    //generate code
+        SemanticRegister SR_DO1 = this.stack.pop();
+        SemanticRegister SR_OP = this.stack.pop();
+        SemanticRegister SR_DO2 = this.stack.pop();
+
+        //verify types in SYMBOL'S TABLE
+        
+        /*
+        Los DO son de tipo constante los 2?{
+        Si: calcular el resultado //constant Folding Ej: 4+5
+        Crear RS_DO de tipo constante NO: generar el código para la operación
+        Crear RS_DO de tipo dirección con el lugar donde quedo el resultado,
+        puede ser una variable temporal o un registro
+        */
+       
+        //generate code
+
+        SemanticRegister SR_Type = new SemanticRegister(SR_Name.DATA_OBJECT,"rx");
+        stack.push(SR_Type);
     
     }
     
@@ -85,10 +96,19 @@ public class SemanticActions {
     //Functions used for Translation of IF 
     ////////////////////////////////////////////////////////////////////////////
     
+    public void startIf() {}
+    
+    public void evalIf() {}
+    
+    public void startElse() {}
+    
+    public void endIf() {}
     
     
     ////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////
+    
+    //------------------------------------------------------------------------//
     
     
 }
