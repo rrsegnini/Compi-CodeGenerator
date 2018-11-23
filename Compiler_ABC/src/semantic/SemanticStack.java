@@ -11,7 +11,7 @@ import java.util.ArrayList;
  *
  * @author danielalvarado
  */
-public class SemanticStack<SemanticRegister> implements Stack {
+public class SemanticStack<SemanticRegister> implements Stack<SemanticRegister> {
     
     ArrayList<SemanticRegister> storedItems = new ArrayList<>();
    
@@ -43,29 +43,21 @@ public class SemanticStack<SemanticRegister> implements Stack {
 
     @Override
     public SemanticRegister search(String descrp) {
-        
+        SemanticRegister sr = null;
         for (int i = 0; i < storedItems.size(); i++) {
-            
-            SemanticRegister sr = storedItems.get(i); 
-           
+            sr = storedItems.get(i); 
         }
-        
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public boolean contains() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return sr;
     }
 
     @Override
     public void clear() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.storedItems.clear();
     }
 
     @Override
     public boolean isEmpty() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       return this.storedItems.isEmpty();
     }
     
 }
