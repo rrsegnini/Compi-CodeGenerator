@@ -9,7 +9,7 @@ package semantic;
  *
  * @author danielalvarado
  */
-public class SemanticStack<RS> implements Stack {
+public class SemanticStack<SR> implements Stack {
 
     @Override
     public boolean push(Object value) {

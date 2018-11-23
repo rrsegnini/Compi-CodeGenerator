@@ -8,14 +8,15 @@ package semantic;
 /**
  *
  * @author danielalvarado
+ * @param <RS> Object stored in the stack (Semantic Register)
  */
-public interface Stack<RS> {
+public interface Stack<SR> {
     
-    boolean push(RS value);
+    boolean push(SR value);
     
-    RS pop();
+    SR pop();
     
-    RS search();
+    SR search();
     
     boolean contains();
     
