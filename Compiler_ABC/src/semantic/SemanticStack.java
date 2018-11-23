@@ -21,13 +21,10 @@ public class SemanticStack<SemanticRegister> implements Stack<SemanticRegister> 
         boolean v = false;
         if (storedItems.isEmpty()) {
             storedItems.add((SemanticRegister) value);
-      
             v = true;
         } else {
             storedItems.add((SemanticRegister) value);
-     
         }
-        
         return v;
     }
 
@@ -37,7 +34,6 @@ public class SemanticStack<SemanticRegister> implements Stack<SemanticRegister> 
         int size = storedItems.size();
         if (size != 0)
             semanticRegister =  storedItems.remove(size-1);
-        
         return semanticRegister;
     }
 

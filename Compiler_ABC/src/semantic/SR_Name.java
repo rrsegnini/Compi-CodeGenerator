@@ -11,6 +11,6 @@ package semantic;
  */
 public enum SR_Name {
     
-    WHILE,IF,DATA_OBJECT,OPERATOR;
+    WHILE,IF,DATA_OBJECT,OPERATOR,TYPE, ID;
     
 }
