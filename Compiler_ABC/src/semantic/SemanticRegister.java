@@ -11,41 +11,41 @@ package semantic;
  */
 public class SemanticRegister {
     
-    String descrp;
-    String valor;
-    String type;
+    private SR_Name descrp;
+    private String value;
+    private String type;
+    private String label1;
+    private String label2;
 
     /**
      * Constructor used for WHILE IF 
      * @param descrp SR name 
-     * @param valor  SR token being stored 
+     * @param value  SR token being stored 
      */
-    public SemanticRegister(String descrp, String valor) {
+    public SemanticRegister(SR_Name descrp, String value) {
         this.descrp = descrp;
-        this.valor = valor;
+        this.value = value;
     }
        
     /**
      * Constructor used for SR_DO (constants and variables)
      * @param descrp SR name
-     * @param valor  SR token being stored
+     * @param value  SR token being stored
      * @param type   SR type of SR_DO
      */
-    public SemanticRegister(String descrp, String valor, String type) {
+    public SemanticRegister(SR_Name descrp, String value, String type) {
         this.descrp = descrp;
-        this.valor = valor;
+        this.value = value;
         this.type = type;
     }
 
     
-    
-    
-    public String getValor() {
-        return valor;
+    public String getValue() {
+        return value;
     }
 
-    public void setValor(String valor) {
-        this.valor = valor;
+    public void setValue(String valor) {
+        this.value = valor;
     }
 
     public String getType() {
@@ -57,12 +57,28 @@ public class SemanticRegister {
     }
     
 
-    public String getDescrp() {
+    public SR_Name getDescrp() {
         return descrp;
     }
 
-    public void setDescrp(String descrp) {
+    public void setDescrp(SR_Name descrp) {
         this.descrp = descrp;
+    }
+
+    public String getLabel1() {
+        return label1;
+    }
+
+    public void setLabel1(String label1) {
+        this.label1 = label1;
+    }
+
+    public String getLabel2() {
+        return label2;
+    }
+
+    public void setLabel2(String label2) {
+        this.label2 = label2;
     }
     
     
