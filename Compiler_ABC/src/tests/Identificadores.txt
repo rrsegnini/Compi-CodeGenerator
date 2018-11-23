@@ -1,0 +1,39 @@
+ 
+ 2texto:STRING;  // Aqui si hay un error porque no puede empezar con numeros
+cont: INT;  // no hay error
+ 
+ 
+_abc REAL;  // no hay error
+ 
+
+  
+
+
+
+$aa: CHAR;   //en este caso se espera que $ de un error lexico
+
+
+
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+
+{este debe dar error porque es mas largo que 127 caracteres}
+
+
+
+
+
+caña, hola&, adios!, mult*   //deber dar errores porque son caracteres no validos
+
+
+
+//  ERRORES DE SIMBOLOS NO CONOCIDOS
+
+    
+  \@         
+
+  
+  Á 
+  INT árbol;    º 
+
+
+

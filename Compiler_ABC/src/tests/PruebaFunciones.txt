@@ -1,0 +1,26 @@
+//Se desea probar tanto la declaracion como el llamado de funciones
+
+
+PROGRAM Prueba
+
+VAR
+
+ numero,limite,contador:int;  // todo esta bien
+
+
+// se definen funciones con errores
+
+
+
+
+
+
+FUNCTION funcion8 // error no tiene los parentesis de los parametros
+BEGIN
+ funcion5:=0; 
+END
+
+
+BEGIN
+ write(3);
+END
