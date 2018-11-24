@@ -14,6 +14,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import parser.*;
+import semantic.*;
 import java_cup.runtime.Symbol;
 /**
  *
@@ -53,15 +54,10 @@ public class Scanner {
     public static void main(String [ ] args){
 
         try{
-            File file = new File("src/tests/PruebaEstControl.txt");
+            /*File file = new File("src/tests/PruebaEstControl.txt");
 
             String path = file.getAbsolutePath();
-           // Path p = Paths.get("prueba.txt");
-            //Path folder = p.getParent();
             String archivo = path;
-
-            
-
             // Se trata de leer el archivo y analizarlo en la clase que se ha creado con JFlex
             BufferedReader buffer = new BufferedReader(new FileReader(archivo));
             ScannerABC analizadorJFlex = new ScannerABC(buffer);
@@ -74,8 +70,16 @@ public class Scanner {
             analizadorJFlex = new ScannerABC(buffer);
             p = new parser(analizadorJFlex);
             
-            Object result = p.parse().value; 
-            //Object result2 = p.debug_parse();
+            //Object result = p.parse().value; */
+            SymbolTable ST = new SymbolTable();
+            
+            ST.put("ID", new SFunction("INT"));
+            if (ST.symbolExists("ID")){
+                System.out.println(ST.getSymbol("ID"));
+            }
+            
+            //System.out.println((ST.getSymbol("ID")));
+            
             
             
         }catch (Exception e){
