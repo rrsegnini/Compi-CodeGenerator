@@ -17,7 +17,11 @@ VAR
 
 FUNCTION funcion8():int // error no tiene los parentesis de los parametros
 Const
-
+x=8.5;
+b=1;
+var
+a,b,c:int;
+BEGIN
 
  funcion5:=0; 
 END

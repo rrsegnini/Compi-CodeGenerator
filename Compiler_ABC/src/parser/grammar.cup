@@ -117,7 +117,7 @@ non terminal program,constants,constants_body,
             procedure_header,statement,
             recovery;
 
-precedence left ARITHMETICOP, BOOLEAN_OPERATOR, EQUAL, MINUSOP,IDENTIFIER,BEGIN;
+precedence left ARITHMETICOP, BOOLEAN_OPERATOR, EQUAL, MINUSOP,IDENTIFIER,BEGIN,COMMA,COLON;
 
 
 //start with program;
@@ -137,30 +137,26 @@ program ::= PROGRAM IDENTIFIER constants globals functions BEGIN statements END
 
 constants ::= CONST constants_body;
 
-constants_body ::= IDENTIFIER EQUAL LITERAL SEMI constants_body | 
-                    IDENTIFIER EQUAL INTEGER_NUMERIC_LITERAL SEMI constants_body| 
-                   IDENTIFIER EQUAL STRING_LITERAL SEMI constants_body |
-                   IDENTIFIER EQUAL CHAR_LITERAL SEMI constants_body | 
-                    IDENTIFIER EQUAL FLOATING_POINT_NUMERIC_LITERAL SEMI constants_body | 
-                   IDENTIFIER EQUAL NUMERIC_CHAR_LITERAL SEMI constants_body |
-                   IDENTIFIER EQUAL SCIENTIFIC_NOTATION_NUMERIC_LITERAL SEMI constants_body 
+constants_body ::= IDENTIFIER:i EQUAL  {:System.out.println(i);:}  literal SEMI constants_body
                     |  IDENTIFIER EQUAL error:e SEMI {: parser.report_error("Error al declarar una constante\n", e);:}
                     | /*epsilon*/;
+
 
 globals ::= VAR globals_body ;
 
 
-globals_body ::= /*epsilon*/ | IDENTIFIER globals_list COLON Type SEMI globals_body  
+globals_body ::= /*epsilon*/ | IDENTIFIER:i  {:System.out.println(i);:}  globals_list COLON Type SEMI globals_body /* 
                  |  IDENTIFIER globals_list COLON error:e SEMI globals_body {: parser.report_error("Tipo no existe\n", e); :} 
                  |  error:e SEMI {: 
                                   parser.report_error("Error en VAR\n", e); 
-                                   :};
+                                   :}*/
+                ;
 
 
-globals_list ::= COMMA IDENTIFIER globals_list 
+globals_list ::= COMMA IDENTIFIER:i {:System.out.println(i);:} globals_list 
                 | /*epsilon*/;
 
-Type ::= INT|CHAR|STRING;
+Type ::= INT:t {:System.out.println(t);:} |CHAR:t {:System.out.println(t);:} |STRING:t {:System.out.println(t);:};
 
 
 functions ::= FUNCTION function_header functions| PROCEDURE procedure_header functions | FUNCTION error:e END {:
@@ -272,9 +268,12 @@ for_statement ::= FOR IDENTIFIER COLON EQUAL exp TO exp DO BEGIN statements END
                 | FOR error:e TO exp DO BEGIN statements END {: parser.report_error("Debe de asignar un valor\n", e); :}
                 | FOR error:e END {: parser.report_error("Error en el FOR", e); :} ;
 
-literal ::= FLOATING_POINT_NUMERIC_LITERAL | 
-        INTEGER_NUMERIC_LITERAL | SCIENTIFIC_NOTATION_NUMERIC_LITERAL | 
-        STRING_LITERAL | NUMERIC_CHAR_LITERAL | CHAR_LITERAL;
+literal ::= FLOATING_POINT_NUMERIC_LITERAL:li {:System.out.println(li);:} | 
+        INTEGER_NUMERIC_LITERAL:li {:System.out.println(li);:}  | 
+        SCIENTIFIC_NOTATION_NUMERIC_LITERAL:li {:System.out.println(li);:}  | 
+        STRING_LITERAL:li {:System.out.println(li);:}  
+        | NUMERIC_CHAR_LITERAL:li {:System.out.println(li);:}  
+        | CHAR_LITERAL:li {:System.out.println(li);:} ;
 
 /*exp ::= IDENTIFIER | OPEN_PARENTHESIS exp CLOSE_PARENTHESIS | TRUE | FALSE |  
           | literal | fun_def | fun_call | MINUSOP exp;*/
