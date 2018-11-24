@@ -5,39 +5,44 @@
  */
 package semantic;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 /**
  *
  * @author danielalvarado
  */
 public class SemanticActions {
-    SemanticStack<SemanticRegister> stack;
+    private static SemanticStack stack;
+    private static Path file;
     
     
     public SemanticActions() {
-        this.stack = new SemanticStack<SemanticRegister>();
+        this.stack = SemanticStack.getInstance();
     }
     
-    public SemanticActions(SemanticStack<SemanticRegister> _stack) {
-        this.stack = _stack;
-        
+    
+    public static void openFile() {
+        this.file = Paths.get("assembler_code.txt");
+        //Files.write(file, lines, Charset.forName("UTF-8"), StandardOpenOption.APPEND);
     }
     
     ////////////////////////////////////////////////////////////////////////////
     //Functions used for Translation of Declarations
     ////////////////////////////////////////////////////////////////////////////
     
-    public void rememberType(String _token) {
+    public static void rememberType(String _token) {
         SemanticRegister SR_Type = new SemanticRegister(SR_Name.TYPE,_token);
         stack.push(SR_Type); 
     }
     
-    public void rememberID(String _token) {
+    public static void rememberID(String _token) {
         SemanticRegister SR_Id = new SemanticRegister(SR_Name.ID,_token);
         stack.push(SR_Id);
     }
     
-    public void insertST() {
-    // TODO: 
+    public static void insertST() {
+        SemanticRegister SR_Type = this.stack.search(SR_Name.TYPE);
     }
     
     ////////////////////////////////////////////////////////////////////////////
@@ -96,7 +101,7 @@ public class SemanticActions {
     //Functions used for Translation of IF 
     ////////////////////////////////////////////////////////////////////////////
     
-    public void startIf() {}
+    public void startIf(int _counter) {}
     
     public void evalIf() {}
     

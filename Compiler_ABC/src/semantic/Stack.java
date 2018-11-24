@@ -10,15 +10,15 @@ package semantic;
  * @author danielalvarado
  * @param <RS> Object stored in the stack (Semantic Register)
  */
-public interface Stack<SR> {
+public interface Stack {
     
-    boolean push(SR value);
+     boolean push(SemanticRegister value);
     
-    SR pop();
+     SemanticRegister pop();
     
-    SR search(String descrp);
+     SemanticRegister search(SR_Name descrp);
        
-    void clear();
+     void clear();
     
-    boolean isEmpty();
+     boolean isEmpty();
 }

@@ -11,19 +11,31 @@ import java.util.ArrayList;
  *
  * @author danielalvarado
  */
-public class SemanticStack<SemanticRegister> implements Stack<SemanticRegister> {
+public class SemanticStack implements Stack {
     
-    ArrayList<SemanticRegister> storedItems = new ArrayList<>();
+    private ArrayList<SemanticRegister> storedItems = new ArrayList<>();
    
+    
+    private static SemanticStack stack;
+    
+    
+    public SemanticStack() {}
+    
+    public static SemanticStack getInstance() {
+        if (stack.equals(null)) {
+            stack = new SemanticStack();
+        }
+        return stack;
+    }
 
     @Override
-    public boolean push(Object value) {
+    public boolean push(SemanticRegister value) {
         boolean v = false;
         if (storedItems.isEmpty()) {
-            storedItems.add((SemanticRegister) value);
+            storedItems.add(value);
             v = true;
         } else {
-            storedItems.add((SemanticRegister) value);
+            storedItems.add(value);
         }
         return v;
     }
@@ -38,10 +50,13 @@ public class SemanticStack<SemanticRegister> implements Stack<SemanticRegister> 
     }
 
     @Override
-    public SemanticRegister search(String descrp) {
+    public SemanticRegister search(SR_Name descrp) {
         SemanticRegister sr = null;
         for (int i = 0; i < storedItems.size(); i++) {
-            sr = storedItems.get(i); 
+            SemanticRegister sr1 = storedItems.get(i);
+            if (sr1.getDescrp().equals(this))
+                sr = sr1; 
+            
         }
         return sr;
     }
