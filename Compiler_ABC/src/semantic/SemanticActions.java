@@ -23,12 +23,12 @@ public class SemanticActions {
     
     
     public static void openFile() {
-        this.file = Paths.get("assembler_code.txt");
+        file = Paths.get("assembler_code.txt");
         //Files.write(file, lines, Charset.forName("UTF-8"), StandardOpenOption.APPEND);
     }
     
     ////////////////////////////////////////////////////////////////////////////
-    //Functions used for Translation of Declarations
+    //Functions used for Translation of Declarations (Variables)
     ////////////////////////////////////////////////////////////////////////////
     
     public static void rememberType(String _token) {
@@ -41,8 +41,15 @@ public class SemanticActions {
         stack.push(SR_Id);
     }
     
-    public static void insertST() {
-        SemanticRegister SR_Type = this.stack.search(SR_Name.TYPE);
+    public static void insertVarST() {
+        SemanticRegister SR_Type = stack.search(SR_Name.TYPE);
+        while (stack.top() != SR_Type) {
+            SemanticRegister SR_DataObject = stack.pop();
+            
+        }
+        
+        
+        
     }
     
     ////////////////////////////////////////////////////////////////////////////
@@ -54,26 +61,26 @@ public class SemanticActions {
     //Functions used for Translation of Expressions
     ////////////////////////////////////////////////////////////////////////////
     
-    public void rememberConst(String _token) {
+    public static void rememberConst(String _token) {
         SemanticRegister SR_Const = new SemanticRegister(SR_Name.DATA_OBJECT,_token,ValueType.CONST);
         stack.push(SR_Const); 
     }
     
-    public void rememberVariable(String _token) {
+    public static void rememberVariable(String _token) {
         // VERIFY IN SYMBOL'S TABLE
         SemanticRegister SR_Var = new SemanticRegister(SR_Name.DATA_OBJECT,_token,ValueType.VAR);
         stack.push(SR_Var);
     }
     
-    public void rememberOperator(String _token) {
+    public static void rememberOperator(String _token) {
         SemanticRegister SR_Op = new SemanticRegister(SR_Name.OPERATOR,_token);
         stack.push(SR_Op);
     }
     
-    public void binaryEvaluation() {
-        SemanticRegister SR_DO1 = this.stack.pop();
-        SemanticRegister SR_OP = this.stack.pop();
-        SemanticRegister SR_DO2 = this.stack.pop();
+    public static void binaryEvaluation() {
+        SemanticRegister SR_DO1 = stack.pop();
+        SemanticRegister SR_OP = stack.pop();
+        SemanticRegister SR_DO2 = stack.pop();
 
         //verify types in SYMBOL'S TABLE
         
@@ -84,6 +91,13 @@ public class SemanticActions {
         Crear RS_DO de tipo dirección con el lugar donde quedo el resultado,
         puede ser una variable temporal o un registro
         */
+        
+        if (SR_DO1.getType().equals(ValueType.CONST) &&  
+                SR_DO2.getType().equals(ValueType.CONST) ) {
+        
+        } else {
+        
+        }
        
         //generate code
 
@@ -101,13 +115,13 @@ public class SemanticActions {
     //Functions used for Translation of IF 
     ////////////////////////////////////////////////////////////////////////////
     
-    public void startIf(int _counter) {}
+    public static void startIf(int _counter) {}
     
-    public void evalIf() {}
+    public static void evalIf() {}
     
-    public void startElse() {}
+    public static void startElse() {}
     
-    public void endIf() {}
+    public static void endIf() {}
     
     
     ////////////////////////////////////////////////////////////////////////////

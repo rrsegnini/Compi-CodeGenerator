@@ -15,10 +15,14 @@ public interface Stack {
      boolean push(SemanticRegister value);
     
      SemanticRegister pop();
+     
+     SemanticRegister top();
     
      SemanticRegister search(SR_Name descrp);
        
      void clear();
     
      boolean isEmpty();
+     
+     
 }

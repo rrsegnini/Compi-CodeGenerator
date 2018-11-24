@@ -44,8 +44,10 @@ public class SemanticStack implements Stack {
     public SemanticRegister pop() {
         SemanticRegister semanticRegister = null;
         int size = storedItems.size();
-        if (size != 0)
-            semanticRegister =  storedItems.remove(size-1);
+        if (size != 0) {
+            semanticRegister =  storedItems.get(size-1);
+            storedItems.remove(size-1);   
+        }
         return semanticRegister;
     }
 
@@ -70,5 +72,18 @@ public class SemanticStack implements Stack {
     public boolean isEmpty() {
        return this.storedItems.isEmpty();
     }
+
+    @Override
+    public SemanticRegister top() {
+        SemanticRegister semanticRegister = null;
+        int size = storedItems.size();
+        if (size != 0) {
+            semanticRegister =  storedItems.get(size-1);
+        }
+        return semanticRegister;
+    }
+    
+    
+    
     
 }
