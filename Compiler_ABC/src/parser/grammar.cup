@@ -174,7 +174,7 @@ functions ::= FUNCTION function_header functions| PROCEDURE procedure_header fun
                                                                 ;
 
 
-function_header ::= IDENTIFIER OPEN_PARENTHESIS CLOSE_PARENTHESIS COLON Type BEGIN function_body END |
+function_header ::= IDENTIFIER OPEN_PARENTHESIS CLOSE_PARENTHESIS COLON Type function_body BEGIN statements END |
                     IDENTIFIER OPEN_PARENTHESIS Type IDENTIFIER parameter_list CLOSE_PARENTHESIS COLON Type BEGIN function_body END 
                    | IDENTIFIER OPEN_PARENTHESIS Type IDENTIFIER parameter_list CLOSE_PARENTHESIS error:e BEGIN function_body END{:
                         parser.report_error("Tipo de retorno no especificado en la funcion\n", e); 

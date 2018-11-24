@@ -566,7 +566,7 @@ R_Int
 }
 
 {Float} {
-    Symbol t = new Symbol(sym.IDENTIFIER, yyline, yycolumn, (Object)yytext());
+    Symbol t = new Symbol(sym.FLOATING_POINT_NUMERIC_LITERAL, yyline, yycolumn, (Object)yytext());
     //Token t = new Token(yytext(), Types.FLOATING_POINT_NUMERIC_LITERAL, yyline);
     this._existenTokens = true;
     return t;

@@ -15,8 +15,10 @@ VAR
 
 
 
-FUNCTION funcion8 // error no tiene los parentesis de los parametros
-BEGIN
+FUNCTION funcion8():int // error no tiene los parentesis de los parametros
+Const
+
+
  funcion5:=0; 
 END
 

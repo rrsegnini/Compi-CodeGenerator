@@ -54,7 +54,7 @@ public class Scanner {
     public static void main(String [ ] args){
 
         try{
-            /*File file = new File("src/tests/PruebaEstControl.txt");
+            File file = new File("src/tests/PruebaFunciones.txt");
 
             String path = file.getAbsolutePath();
             String archivo = path;
@@ -70,15 +70,13 @@ public class Scanner {
             analizadorJFlex = new ScannerABC(buffer);
             p = new parser(analizadorJFlex);
             
-            //Object result = p.parse().value; */
+            Object result = p.parse().value;
             SymbolTable ST = new SymbolTable();
             
-            ST.put("ID", new SFunction("INT"));
+            /*ST.put("ID", new SFunction("INT"));
             if (ST.symbolExists("ID")){
                 System.out.println(ST.getSymbol("ID"));
-            }
-            
-            //System.out.println((ST.getSymbol("ID")));
+            }*/
             
             
             
