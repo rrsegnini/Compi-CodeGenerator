@@ -225,7 +225,6 @@ public class SemanticActions {
     }
     
     public static void generateEvalCode(String var1, String var2, String op) {
-        int a = 0;
         try {
             switch (op) {
                 case "+": 
@@ -252,36 +251,69 @@ public class SemanticActions {
     }
     
     public static void assignmentCode(String var, String res) throws IOException {
-        writer.write("mov " + var + "," + res );
+        writer.write("mov " + var + "," + res  +"\n");
     }
     
     
     public static void addCode(String var1, String var2) throws IOException {
-        writer.write("mov " + "ax," + var1 );
-        writer.write("add " + "ax," + var2 );   
+        writer.write("mov " + "ax," + var1  +"\n");
+        writer.write("add " + "ax," + var2  +"\n");   
     }
     public static void subCode(String var1, String var2) throws IOException  {
-        writer.write("mov " + "ax," + var1 );
-        writer.write("sub " + "ax," + var2 ); 
+        writer.write("mov " + "ax," + var1  +"\n");
+        writer.write("sub " + "ax," + var2  +"\n"); 
     }
     public static void multCode(String var1, String var2) throws IOException  {
-        writer.write("mov " + "ax," + var1 );
-        writer.write("mul " + var2 ); 
+        writer.write("mov " + "ax," + var1  +"\n");
+        writer.write("mul " + var2  +"\n"); 
     }
     public static void divCode(String dividend, String divisor) throws IOException  {
-        writer.write("mov " + "dx,0");
-        writer.write("mov " + "ax,," + dividend );
-        writer.write("mov " + "cx," + divisor ); 
-        writer.write("div " + "cx"); 
+        writer.write("mov " + "dx,0" +"\n");
+        writer.write("mov " + "ax,," + dividend  +"\n");
+        writer.write("mov " + "cx," + divisor  +"\n"); 
+        writer.write("div " + "cx" +"\n"); 
         
     }
     public static void modCode(String dividend, String divisor) throws IOException  {
-        writer.write("mov " + "dx,0");
-        writer.write("mov " + "ax,," + dividend );
-        writer.write("mov " + "cx," + divisor ); 
-        writer.write("div " + "cx"); 
-        writer.write("mov " + "ax,dx" );
+        writer.write("mov " + "dx,0" +"\n");
+        writer.write("mov " + "ax,," + dividend +"\n" );
+        writer.write("mov " + "cx," + divisor  +"\n"); 
+        writer.write("div " + "cx" +"\n"); 
+        writer.write("mov " + "ax,dx"  +"\n");
     }
+    
+  
+    ////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////
+    
+    
+    public static void generateIfCode(String var1, String var2, String op ,String label) {
+        try {
+            writer.write("cmp " + var1 + "," + var2 +"\n");
+            switch (op) {
+                case "=": 
+                    writer.write("JNE" + label +"\n");
+                    break;
+                case ">": 
+                    writer.write("JNGE" + label +"\n");
+                    break;
+                case "<": 
+                    writer.write("JNLE" + label +"\n");        
+                    break;
+                case "!=":
+                    writer.write("JE" + label +"\n");
+                    break;
+                case "<=":
+                    writer.write("JNE" + label +"\n");
+                    break;
+                case ">=":
+                    writer.write("JNG" + label +"\n");
+                    break;
+
+            }
+        } catch (Exception e) {}
+    }
+    
     
     
     
