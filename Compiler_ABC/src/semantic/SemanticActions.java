@@ -9,6 +9,7 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -70,6 +71,34 @@ public class SemanticActions {
         SymbolTable ts = new SymbolTable();
         ts.put(constantSR.getToken(), constant);
 
+    }
+    
+    public static void insertFunctionST() {
+        
+        ArrayList parameters = new ArrayList<>();
+        SemanticRegister SR_DataObject = null;
+        SemanticRegister SR_ParameterType = null;
+        SemanticRegister SR_ReturnType = stack.pop();
+        
+        while (stack.top() != null) {
+            ArrayList parameter = new ArrayList<String>();
+            
+            SR_DataObject = stack.pop();
+            if (stack.top() != null){                
+                SR_ParameterType = stack.pop();
+                parameter.add(SR_DataObject.getToken());
+                parameter.add(SR_ParameterType.getToken());
+                parameters.add(parameter);             
+            }else{
+                SFunction function = new SFunction(SR_ReturnType.getToken(),
+                                        parameters);
+                SymbolTable ST = new SymbolTable();
+                ST.put(SR_DataObject.getToken(), function);
+            }
+            
+            
+        }
+        
     }
     
     

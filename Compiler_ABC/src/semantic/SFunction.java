@@ -29,11 +29,11 @@ public class SFunction extends Symbol{
     @Override
     public String toString() {
         if (parameters != null){
-            return "Parameters: " + parameters.toString() + "\n" +
-                    "Return type: " + returnType;
+            return "[Parameters: " + parameters.toString() + " " +
+                    "Return type: " + returnType + "]";
         }else{
-            return "Parameters: " + "No parameters" + "\n" +
-                    "Return type: " + returnType;           
+            return "[Parameters: " + "No parameters" + " " +
+                    "Return type: " + returnType + "]";           
         }
     }
     

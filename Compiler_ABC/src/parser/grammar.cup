@@ -183,9 +183,14 @@ functions ::= FUNCTION function_header functions| PROCEDURE procedure_header fun
                                                                 ;
 
 
-function_header ::= IDENTIFIER OPEN_PARENTHESIS CLOSE_PARENTHESIS COLON Type function_body BEGIN statements END |
-                    IDENTIFIER OPEN_PARENTHESIS Type IDENTIFIER parameter_list CLOSE_PARENTHESIS COLON Type BEGIN function_body END 
-                   | IDENTIFIER OPEN_PARENTHESIS Type IDENTIFIER parameter_list CLOSE_PARENTHESIS error:e BEGIN function_body END{:
+function_header ::= IDENTIFIER:i OPEN_PARENTHESIS {:SemanticActions.rememberVar(i.toString());:} 
+                    CLOSE_PARENTHESIS COLON Type {:SemanticActions.insertFunctionST();:} function_body BEGIN statements END 
+                    |
+                    IDENTIFIER:i OPEN_PARENTHESIS {:SemanticActions.rememberVar(i.toString());:} 
+                            Type IDENTIFIER:i2 {:SemanticActions.rememberVar(i2.toString());:} 
+                            parameter_list CLOSE_PARENTHESIS COLON Type {:SemanticActions.insertFunctionST();:}  BEGIN function_body END 
+
+                   /*| IDENTIFIER OPEN_PARENTHESIS Type IDENTIFIER parameter_list CLOSE_PARENTHESIS error:e BEGIN function_body END{:
                         parser.report_error("Tipo de retorno no especificado en la funcion\n", e); 
                    :}
                    | IDENTIFIER OPEN_PARENTHESIS Type IDENTIFIER error:e CLOSE_PARENTHESIS COLON Type BEGIN function_body END{:
@@ -194,7 +199,7 @@ function_header ::= IDENTIFIER OPEN_PARENTHESIS CLOSE_PARENTHESIS COLON Type fun
                    | IDENTIFIER OPEN_PARENTHESIS Type IDENTIFIER parameter_list CLOSE_PARENTHESIS COLON Type BEGIN error:e END 
                    {:
                         parser.report_error("Error en el cuerpo de la funcion\n", e); 
-                    :};
+                    :}*/;
 
 
 procedure_header ::= IDENTIFIER OPEN_PARENTHESIS CLOSE_PARENTHESIS BEGIN function_body END |
@@ -207,7 +212,7 @@ procedure_header ::= IDENTIFIER OPEN_PARENTHESIS CLOSE_PARENTHESIS BEGIN functio
                         parser.report_error("Error en el cuerpo de la procedimiento\n", e); 
                     :};
 
-parameter_list ::= COMMA Type IDENTIFIER parameter_list | 
+parameter_list ::= COMMA Type IDENTIFIER:i2 {:SemanticActions.rememberVar(i2.toString());:}  parameter_list | 
                 COMMA error:e IDENTIFIER parameter_list{: 
                     parser.report_error("No especificado el tipo de un parametro\n", e); 
                 :}
