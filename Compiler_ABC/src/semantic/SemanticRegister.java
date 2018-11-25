@@ -40,7 +40,7 @@ public class SemanticRegister {
     }
 
     
-    public String getValue() {
+    public String getToken() {
         return value;
     }
 

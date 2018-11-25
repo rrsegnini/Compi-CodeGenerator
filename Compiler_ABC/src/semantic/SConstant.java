@@ -11,4 +11,11 @@ package semantic;
  */
 public class SConstant extends Symbol{
     public static String value; 
+
+    public SConstant(String _value) {
+        value = _value;
+    }
+    
+    
+    
 }
