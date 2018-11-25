@@ -49,7 +49,9 @@ public class SemanticActions {
         // PERO ENTONCES TENGO QUE GUARDAR EL VALOR
         // ENTONCES NO SE QUE TENGO QUE MANDARLE AL PUT.
         // SI TECNICAMENTE EL SYMBOL YA TIENE LA VARIABLE EN SI, ES DECIR EL 
-        // A
+        // PERDON POR LA MASYUSCULA FUE SIN QUERER Y CUANDO ME DI CUENTA NO IBA A 
+        // BORRARLO Y A VOLVERLO A ESCRIBID XD JAJAJAJA
+        
         SemanticRegister SR_Type = stack.search(SR_Name.TYPE);
         while (stack.top() != SR_Type) {
             SemanticRegister SR_DataObject = stack.pop();
