@@ -185,12 +185,88 @@ public class SemanticActions {
         
     }
     
-    public static void evalIf() {}
     
-    public static void startElse() {}
+    public static void evalIf() {
+        //Usa este metodo aca generateIfCode(String var1, String var2, String op ,String label)
+        SemanticRegister SR_IF = stack.search(SR_Name.IF);
+        String elseLabel = SR_IF.getLabel1();
+        SemanticRegister SR_DO1 = stack.pop();
+        SemanticRegister SR_OP = stack.pop();
+        SemanticRegister SR_DO2 = stack.pop();
+        SemanticActions.generateCondCode(SR_DO1.getToken(), SR_DO2.getToken(), SR_OP.getToken(), elseLabel);
     
-    public static void endIf() {}
+    }
     
+    public static void startElse() {
+        try {
+            SemanticRegister SR_IF = stack.search(SR_Name.IF);
+            //writes the jmp to the exit label
+            writer.write("JMP"+SR_IF.getLabel2() +"\n");
+            // writes the else label
+            writer.write(SR_IF.getLabel1() +":"+"\n");
+            
+        }catch (Exception e) {
+        }
+    }
+    
+    public static void endIf() {
+        try {
+            SemanticRegister SR_IF = stack.search(SR_Name.IF);
+            // writes the else label
+            writer.write(SR_IF.getLabel2() +":"+"\n");
+            
+        }catch (Exception e) {
+        }
+        
+    }
+    
+    
+    ////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////
+    
+    //------------------------------------------------------------------------//
+    
+    
+    ////////////////////////////////////////////////////////////////////////////
+    //Functions used for WHILE Assignment
+    ////////////////////////////////////////////////////////////////////////////
+    
+    public static void startWhile(int _counter) {
+        SemanticRegister SR_WHILE = new SemanticRegister(SR_Name.WHILE,"while");
+        SR_WHILE.setLabel1("while_label" + Integer.toString(_counter));
+        SR_WHILE.setLabel2("exit_label" + Integer.toString(_counter));
+        
+         try {
+            writer.write(SR_WHILE.getLabel1() +":"+"\n");
+            
+        }catch (Exception e) {
+        }
+        
+        stack.push(SR_WHILE);
+    }
+
+    public static void evalWhile() {
+        SemanticRegister SR_WHILE = stack.search(SR_Name.WHILE);
+        String exitLabel = SR_WHILE.getLabel2();
+        SemanticRegister SR_DO1 = stack.pop();
+        SemanticRegister SR_OP = stack.pop();
+        SemanticRegister SR_DO2 = stack.pop();
+        SemanticActions.generateCondCode(SR_DO1.getToken(), SR_DO2.getToken(), SR_OP.getToken(), exitLabel);
+    }
+    
+    public static void endWhile() {
+        try {
+            SemanticRegister SR_IF = stack.search(SR_Name.IF);
+            //writes the jump to the start_while label
+            writer.write("JMP"+SR_IF.getLabel1() +"\n");
+            // writes the e label
+            writer.write(SR_IF.getLabel2() +":"+"\n");
+            
+        }catch (Exception e) {
+            
+        }
+        
+    }
     
     ////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////
@@ -287,7 +363,7 @@ public class SemanticActions {
     ////////////////////////////////////////////////////////////////////////////
     
     
-    public static void generateIfCode(String var1, String var2, String op ,String label) {
+    public static void generateCondCode(String var1, String var2, String op ,String label) {
         try {
             writer.write("cmp " + var1 + "," + var2 +"\n");
             switch (op) {
