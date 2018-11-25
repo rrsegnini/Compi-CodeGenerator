@@ -1,4 +1,5 @@
 package parser;
+import semantic.*;
 import java_cup.runtime.*;
 import java_cup.runtime.Symbol;
 
@@ -115,7 +116,7 @@ non terminal program,constants,constants_body,
             read,write,
             exp1,exp2,cond2, literal, 
             procedure_header,statement,
-            recovery;
+            recovery,literal_const;
 
 precedence left ARITHMETICOP, BOOLEAN_OPERATOR, EQUAL, MINUSOP,IDENTIFIER,BEGIN,COMMA,COLON;
 
@@ -137,15 +138,24 @@ program ::= PROGRAM IDENTIFIER constants globals functions BEGIN statements END
 
 constants ::= CONST constants_body;
 
-constants_body ::= IDENTIFIER:i EQUAL  {:System.out.println(i);:}  literal SEMI constants_body
+constants_body ::= IDENTIFIER:i EQUAL  {:SemanticActions.rememberConst(i.toString());:}  literal_const SEMI constants_body
                     |  IDENTIFIER EQUAL error:e SEMI {: parser.report_error("Error al declarar una constante\n", e);:}
                     | /*epsilon*/;
+
+
+literal_const ::= FLOATING_POINT_NUMERIC_LITERAL:li {:SemanticActions.insertConstTS(li.toString());:} | 
+        INTEGER_NUMERIC_LITERAL:li {:SemanticActions.insertConstTS(li.toString());:}  | 
+        SCIENTIFIC_NOTATION_NUMERIC_LITERAL:li {:SemanticActions.insertConstTS(li.toString());:}   | 
+        STRING_LITERAL:li {:SemanticActions.insertConstTS(li.toString());:} 
+        | NUMERIC_CHAR_LITERAL:li {:SemanticActions.insertConstTS(li.toString());:}   
+        | CHAR_LITERAL:li {:SemanticActions.insertConstTS(li.toString());:}  ;
+
 
 
 globals ::= VAR globals_body ;
 
 
-globals_body ::= /*epsilon*/ | IDENTIFIER:i  {:System.out.println(i);:}  globals_list COLON Type SEMI globals_body /* 
+globals_body ::= /*epsilon*/ | IDENTIFIER:i  {:SemanticActions.rememberVar(i.toString());:}  globals_list COLON Type SEMI {:SemanticActions.insertVarST();:} globals_body /* 
                  |  IDENTIFIER globals_list COLON error:e SEMI globals_body {: parser.report_error("Tipo no existe\n", e); :} 
                  |  error:e SEMI {: 
                                   parser.report_error("Error en VAR\n", e); 
@@ -153,10 +163,13 @@ globals_body ::= /*epsilon*/ | IDENTIFIER:i  {:System.out.println(i);:}  globals
                 ;
 
 
-globals_list ::= COMMA IDENTIFIER:i {:System.out.println(i);:} globals_list 
+globals_list ::= COMMA IDENTIFIER:i {:SemanticActions.rememberVar(i.toString());:} globals_list 
                 | /*epsilon*/;
 
-Type ::= INT:t {:System.out.println(t);:} |CHAR:t {:System.out.println(t);:} |STRING:t {:System.out.println(t);:};
+
+Type ::= INT:t {:SemanticActions.rememberType(t.toString());:} 
+        | CHAR:t {:SemanticActions.rememberType(t.toString());:}
+        | STRING:t {:SemanticActions.rememberType(t.toString());:};
 
 
 functions ::= FUNCTION function_header functions| PROCEDURE procedure_header functions | FUNCTION error:e END {:

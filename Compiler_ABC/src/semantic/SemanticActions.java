@@ -17,7 +17,7 @@ import java.util.logging.Logger;
  * @author danielalvarado
  */
 public class SemanticActions {
-    private static SemanticStack stack;
+    private static SemanticStack stack = new SemanticStack();
     private static String dir = "assembler_code.txt";
     private static BufferedWriter writer;
     
@@ -52,10 +52,11 @@ public class SemanticActions {
         // PERDON POR LA MASYUSCULA FUE SIN QUERER Y CUANDO ME DI CUENTA NO IBA A 
         // BORRARLO Y A VOLVERLO A ESCRIBID XD JAJAJAJA
         
-        SemanticRegister SR_Type = stack.search(SR_Name.TYPE);
-        while (stack.top() != SR_Type) {
+        //SemanticRegister SR_Type = stack.search(SR_Name.TYPE);
+        SemanticRegister SR_Type = stack.pop();
+        while (stack.top() != null) {
             SemanticRegister SR_DataObject = stack.pop();
-            SVariable var = new SVariable(SR_DataObject.getToken());
+            SVariable var = new SVariable(SR_Type.getToken());
             SymbolTable ts = new SymbolTable();
             ts.put(SR_DataObject.getToken(), var);
             
@@ -64,11 +65,10 @@ public class SemanticActions {
     }
     
     public static void insertConstTS(String _value) {
-
         SemanticRegister constantSR = stack.pop();
         SConstant constant = new SConstant(_value);
         SymbolTable ts = new SymbolTable();
-        ts.put(constantSR.toString(), constant);
+        ts.put(constantSR.getToken(), constant);
 
     }
     

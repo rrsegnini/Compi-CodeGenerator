@@ -72,6 +72,10 @@ public class Scanner {
             
             Object result = p.parse().value;
             SymbolTable ST = new SymbolTable();
+            System.out.println(ST.toString());
+            if (ST.symbolExists("b")){
+                System.out.println("Existe :)");
+            }
             
             /*ST.put("ID", new SFunction("INT"));
             if (ST.symbolExists("ID")){
@@ -81,7 +85,7 @@ public class Scanner {
             
             
         }catch (Exception e){
-            System.out.println(e.toString());
+            System.err.println(e.toString());
         }
     }
 }
