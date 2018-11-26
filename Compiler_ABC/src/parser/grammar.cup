@@ -1,5 +1,7 @@
 package parser;
 import semantic.*;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java_cup.runtime.*;
 import java_cup.runtime.Symbol;
 
@@ -39,10 +41,11 @@ parser code {:
        de simbolos correspondiente. */
     public static void main(String[] args){
 
-        // creando buffered writer 
-      BufferedWriter writer = new BufferedWriter(new FileWriter("assembler_code.txt"));
-      SemanticActions.setWriter(writer);
+      
         try {
+              // creando buffered writer 
+            BufferedWriter writer = new BufferedWriter(new FileWriter("assembler_code.txt"));
+            SemanticActions.setWriter(writer);
             System.out.println("\n*** Resultados finales ***");
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -174,7 +177,8 @@ globals_list ::= COMMA IDENTIFIER:i {:SemanticActions.rememberVar(i.toString());
 
 Type ::= INT:t {:SemanticActions.rememberType(t.toString());:} 
         | CHAR:t {:SemanticActions.rememberType(t.toString());:}
-        | STRING:t {:SemanticActions.rememberType(t.toString());:};
+        | STRING:t {:SemanticActions.rememberType(t.toString());:}
+        ;
 
 
 functions ::= FUNCTION function_header functions| PROCEDURE procedure_header functions | FUNCTION error:e END {:
@@ -212,13 +216,14 @@ procedure_header ::= IDENTIFIER:i OPEN_PARENTHESIS {:SemanticActions.rememberVar
                     IDENTIFIER:i OPEN_PARENTHESIS {:SemanticActions.rememberVar(i.toString());:} 
                     Type IDENTIFIER :i2 {:SemanticActions.rememberVar(i2.toString());:}
                     parameter_list CLOSE_PARENTHESIS BEGIN function_body END
-                    | IDENTIFIER OPEN_PARENTHESIS error:e BEGIN function_body END{:
+                    /*| IDENTIFIER OPEN_PARENTHESIS error:e BEGIN function_body END{:
                         parser.report_error("Error en los argumentos de la procedimiento\n", e); 
                    :}
                    | IDENTIFIER OPEN_PARENTHESIS Type IDENTIFIER parameter_list CLOSE_PARENTHESIS BEGIN error:e END 
                    {:
                         parser.report_error("Error en el cuerpo de la procedimiento\n", e); 
-                    :};
+                    :}*/
+                    ;
 
 parameter_list ::= COMMA Type IDENTIFIER:i2 {:SemanticActions.rememberVar(i2.toString());:}  parameter_list | 
                 COMMA error:e IDENTIFIER parameter_list{: 
@@ -239,10 +244,10 @@ statements ::= if_statement statements |while_statement statements|
                 read statements |write statements| ;
 
 
-if_statement ::= IF {:SemanticActions.startIf(1);:}  
-                 OPEN_PARENTHESIS cond {:SemanticActions.evalIf();:} 
-                 CLOSE_PARENTHESIS THEN statements else_statement END 
-                | IF OPEN_PARENTHESIS error:e CLOSE_PARENTHESIS THEN statements else_statement END {:
+if_statement ::= IF OPEN_PARENTHESIS {:SemanticActions.startIf(1);:}  
+                cond CLOSE_PARENTHESIS {:SemanticActions.evalIf();:}  
+                THEN statements else_statement END 
+                /*| IF OPEN_PARENTHESIS error:e CLOSE_PARENTHESIS THEN statements else_statement END {:
                                                                parser.report_error("Error en la condicion IF\n", e); 
                                                                :}
                 | IF  error:e CLOSE_PARENTHESIS THEN statements else_statement END {:
@@ -253,18 +258,19 @@ if_statement ::= IF {:SemanticActions.startIf(1);:}
                                                                :}
                 | IF OPEN_PARENTHESIS cond CLOSE_PARENTHESIS THEN BEGIN:e statements else_statement END {:
                                                                parser.report_error("Syntax error in line " + eleft + ": El if no lleva BEGIN\n", e); 
-                                                               :}
+                                                               :}*/
                 
                                                                ;
                                                             
 
 
-cond ::= IDENTIFIER:i {:SemanticActions.rememberVar(i.toString());:} cond2| OPEN_PARENTHESIS cond CLOSE_PARENTHESIS cond2| 
-        TRUE cond2| FALSE cond2 | literal cond2
-         |fun_call cond2; 
+cond ::= IDENTIFIER:i {:SemanticActions.rememberVar(i.toString());:} cond2| 
+            OPEN_PARENTHESIS cond CLOSE_PARENTHESIS cond2| 
+            TRUE cond2| FALSE cond2 | literal cond2
+            |fun_call cond2; 
 
-cond2 ::= BOOLEAN_OPERATOR:op {:SemanticActions.rememberOperator(i.toString());:} cond |
-          EQUAL:op {:SemanticActions.rememberOperator(i.toString());:}  cond | /*epsilon*/ ;
+cond2 ::= BOOLEAN_OPERATOR:op {:SemanticActions.rememberOperator(op.toString());:} cond |
+          EQUAL:op {:SemanticActions.rememberOperator(op.toString());:}  cond | /*epsilon*/ ;
          
 
 else_statement ::= ELSE {:SemanticActions.startElse();:} statements {:SemanticActions.endIf();:}
@@ -277,7 +283,7 @@ else_statement ::= ELSE {:SemanticActions.startElse();:} statements {:SemanticAc
 while_statement ::= WHILE {:SemanticActions.startWhile(1);:} 
                     OPEN_PARENTHESIS cond {:SemanticActions.evalWhile();:}
                     CLOSE_PARENTHESIS  DO BEGIN statements {:SemanticActions.endWhile();:} END 
-                    | WHILE error:e DO BEGIN statements END{:
+                    /*| WHILE error:e DO BEGIN statements END{:
                                                            parser.report_error("Error en la condicion en WHILE\n", e); 
                                                          :}
                     | WHILE OPEN_PARENTHESIS error:e CLOSE_PARENTHESIS DO BEGIN statements END{:
@@ -291,7 +297,7 @@ while_statement ::= WHILE {:SemanticActions.startWhile(1);:}
                                                          :} 
                     | WHILE  error:e CLOSE_PARENTHESIS DO BEGIN statements END{:
                                                            parser.report_error("Error en la condicion en WHILE, falta parentesis\n", e); 
-                                                         :}
+                                                         :}*/
 
                                                          ;
 

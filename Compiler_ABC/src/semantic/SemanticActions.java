@@ -180,7 +180,7 @@ public class SemanticActions {
     //Functions used for Var Assignment
     ////////////////////////////////////////////////////////////////////////////
     
-    public static void assignVa() {
+    public static void assignVar() {
         SemanticRegister SR_DO2_value2beAssign = stack.pop();
         SemanticRegister SR_OP = stack.pop();
         SemanticRegister SR_DO1_var = stack.pop();
