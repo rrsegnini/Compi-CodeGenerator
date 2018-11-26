@@ -1,0 +1,19 @@
+Program b
+VAR
+x: int ;
+y: int ;
+ 
+FUNCTION func(  a:int, b:int ): int 
+BEGIN
+	x := a + b;
+
+END
+ 
+BEGIN
+ 
+ x := func(3, 4);
+ x := func(3, 4, 7);  // error de paranmetros
+ x := proc(3, 4);  // error funcion no definida
+
+ 
+ END

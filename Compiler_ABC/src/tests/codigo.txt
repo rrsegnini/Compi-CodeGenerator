@@ -1,0 +1,26 @@
+Program b
+VAR
+x: int ;
+y: int ;
+ 
+
+BEGIN
+
+	x:= 10;
+	y:= 20;
+    x := x+y;
+	
+	while (x < 4) BEGIN 
+
+		if (y >= 15)
+		BEGIN
+			x := x * y;
+		ELSE
+		   x := x - y;
+		END
+	 x++;
+	 y--;
+
+	END
+
+END

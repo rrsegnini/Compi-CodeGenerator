@@ -54,7 +54,7 @@ public class Scanner {
     public static void main(String [ ] args){
 
         try{
-            File file = new File("src/tests/PruebaFunciones.txt");
+            File file = new File("src/tests/TablaSimbolos.txt");
 
             String path = file.getAbsolutePath();
             String archivo = path;
@@ -62,7 +62,7 @@ public class Scanner {
             BufferedReader buffer = new BufferedReader(new FileReader(archivo));
             ScannerABC analizadorJFlex = new ScannerABC(buffer);
             parser p = new parser(analizadorJFlex); 
-            //printScannedTokens(analizadorJFlex);
+            printScannedTokens(analizadorJFlex);
             printLexicalErrors(analizadorJFlex);
             
             

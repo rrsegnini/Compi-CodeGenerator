@@ -338,6 +338,11 @@ R_Int
 */
 
 
+{R_Char } {
+    Symbol t = new Symbol(sym.CHAR, yyline, yycolumn, (Object)yytext());
+    this._existenTokens = true;
+    return t;
+}
 
 {R_Do} {
     Symbol t = new Symbol(sym.DO, yyline, yycolumn, (Object)yytext());
