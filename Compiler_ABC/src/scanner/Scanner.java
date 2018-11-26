@@ -75,6 +75,7 @@ public class Scanner {
             // creando buffered writer 
             BufferedWriter writer = new BufferedWriter(new FileWriter("assembler_code.txt"));
             SemanticActions.setWriter(writer);
+            SemanticActions.setCount(1);
             
             Object result = p.parse().value;
             SymbolTable ST = new SymbolTable();

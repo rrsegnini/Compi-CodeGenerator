@@ -21,6 +21,7 @@ public class SemanticActions {
     private static SemanticStack stack = new SemanticStack();
     private static String dir = "assembler_code.txt";
     private static BufferedWriter writer;
+    private static int count;
     
     
     public SemanticActions(BufferedWriter _writer) {
@@ -30,6 +31,10 @@ public class SemanticActions {
 
     public static void setWriter(BufferedWriter writer) {
         SemanticActions.writer = writer;
+    }
+
+    public static void setCount(int count) {
+        SemanticActions.count = count;
     }
     
     
@@ -273,9 +278,10 @@ public class SemanticActions {
     
     public static void startIf(int _counter) {
         SemanticRegister SR_IF = new SemanticRegister(SR_Name.IF,"if");
-        SR_IF.setLabel1("else_label" + Integer.toString(_counter));
-        SR_IF.setLabel2("exit_label" + Integer.toString(_counter));
+        SR_IF.setLabel1("else_label" + Integer.toString(count));
+        SR_IF.setLabel2("exit_label" + Integer.toString(count));
         stack.push(SR_IF);
+        count++;
         
     }
     
@@ -327,8 +333,9 @@ public class SemanticActions {
     
     public static void startWhile(int _counter) {
         SemanticRegister SR_WHILE = new SemanticRegister(SR_Name.WHILE,"while");
-        SR_WHILE.setLabel1("while_label" + Integer.toString(_counter));
-        SR_WHILE.setLabel2("exit_label" + Integer.toString(_counter));
+        SR_WHILE.setLabel1("while_label" + Integer.toString(count));
+        SR_WHILE.setLabel2("exit_label" + Integer.toString(count));
+        count++;
         
          try {
             writer.write(SR_WHILE.getLabel1() +":"+"\n");

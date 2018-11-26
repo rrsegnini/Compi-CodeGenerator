@@ -8,28 +8,14 @@ VAR
  numero,limite,contador:int;  // todo esta bien
 
 
-// se definen funciones con errores
-
-
-
-
-
-
-procedure funcion8(int uno, string dos, int tres) 
-Const
-x=8.5;
-b=1;
-var
-a,b,c:int;
-BEGIN
- //funcion5:=0; 
-END
-
-
 BEGIN
         WHILE (a>8) DO
 		BEGIN
 		   i:=x+1;
         END
- write(y+x);
+
+        WHILE (a>8) DO
+		BEGIN
+		   i:=x+1;
+        END
 END
