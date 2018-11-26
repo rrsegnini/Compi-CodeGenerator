@@ -160,50 +160,70 @@ public class SemanticActions {
     }
     
     public static void binaryEvaluation() {
+        
+        
+        
         SemanticRegister SR_DO1 = stack.pop();
         SemanticRegister SR_OP = stack.pop();
-        SemanticRegister SR_DO2 = stack.pop();
         
-        String resultStr = "ax";
+        //Eval unaria i++
+        if (stack.top().getDescrp().equals(SR_Name.DATA_OBJECT) && SR_OP.getDescrp().equals(SR_Name.OPERATOR)
+                && SR_DO1.getDescrp().equals(SR_Name.OPERATOR)    ) {
+            SemanticRegister SR_DO = stack.pop();
+            String op1 = SR_DO1.getToken();
+            String op2 = SR_OP.getToken();
+            String var1 =  SR_DO.getToken();
+            
+            SemanticActions.generateUnEvalCode( var1, op1, op2);
+            
+        } else {
+            SemanticRegister SR_DO2 = stack.pop();
         
-        //verify types in SYMBOL'S TABLE
-        
-        /*
-        Los DO son de tipo constante los 2?{
-        Si: calcular el resultado //constant Folding Ej: 4+5
-        Crear RS_DO de tipo constante NO: generar el código para la operación
-        Crear RS_DO de tipo dirección con el lugar donde quedo el resultado,
-        puede ser una variable temporal o un registro
-        */
-        
-        if (SR_DO1 != null && SR_DO2 != null){
-            // Executes Constant Folding
-            if (SR_DO1.getType().equals(ValueType.CONST) &&  
-                    SR_DO2.getType().equals(ValueType.CONST) ) {
-                    int res = SemanticActions.constFoldint(SR_DO2.getToken(), SR_DO1.getToken(),
-                            SR_OP.getToken());
-                    resultStr = Integer.toString(res);
-            } else {
-                //GENERATES CODE FOR EXP
-                //generate code where SR_DO2 is the dividend and SR_DO1 is the divisor in div
-                SemanticActions.generateEvalCode(SR_DO2.getToken(), SR_DO1.getToken(), SR_OP.getToken());
-                
+            String resultStr = "ax";
+
+            //verify types in SYMBOL'S TABLE
+
+            /*
+            Los DO son de tipo constante los 2?{
+            Si: calcular el resultado //constant Folding Ej: 4+5
+            Crear RS_DO de tipo constante NO: generar el código para la operación
+            Crear RS_DO de tipo dirección con el lugar donde quedo el resultado,
+            puede ser una variable temporal o un registro
+            */
+
+            if (SR_DO1 != null && SR_DO2 != null){
+                // Executes Constant Folding
+                if (SR_DO1.getType().equals(ValueType.CONST) &&  
+                        SR_DO2.getType().equals(ValueType.CONST) ) {
+                        int res = SemanticActions.constFoldint(SR_DO2.getToken(), SR_DO1.getToken(),
+                                SR_OP.getToken());
+                        resultStr = Integer.toString(res);
+                } else {
+                    //GENERATES CODE FOR EXP
+                    //generate code where SR_DO2 is the dividend and SR_DO1 is the divisor in div
+                    SemanticActions.generateEvalCode(SR_DO2.getToken(), SR_DO1.getToken(), SR_OP.getToken());
+
+                }
+
+                // if :=
+                if (stack.top().getDescrp().equals(SR_Name.OPERATOR)) {
+                    SemanticRegister SR_Object = new SemanticRegister(SR_Name.DATA_OBJECT,resultStr);
+                    stack.push(SR_Object);
+                    SemanticActions.assignVar();
+
+                } else {
+                    SemanticRegister SR_Object = new SemanticRegister(SR_Name.DATA_OBJECT,resultStr);
+                    stack.push(SR_Object);
+                }
+
+
             }
-            
-            // if :=
-            if (stack.top().getDescrp().equals(SR_Name.OPERATOR)) {
-                SemanticRegister SR_Object = new SemanticRegister(SR_Name.DATA_OBJECT,resultStr);
-                stack.push(SR_Object);
-                SemanticActions.assignVar();
-            
-            } else {
-                SemanticRegister SR_Object = new SemanticRegister(SR_Name.DATA_OBJECT,resultStr);
-                stack.push(SR_Object);
-            }
-            
-            
+
+
+
         }
-    
+        
+        
     }
     
     
@@ -408,6 +428,21 @@ public class SemanticActions {
         } catch (Exception e) {}
     }
     
+    public static void generateUnEvalCode(String var1, String op1, String op2) {
+        try {
+            switch (op1) {
+                case "+": 
+                    SemanticActions.incCode(var1);
+                    break;
+                case "-": 
+                    SemanticActions.decCode(var1);
+                    break;
+               
+
+            }
+        } catch (Exception e) {}
+    }
+    
     public static void assignmentCode(String var, String res) throws IOException {
         writer.write("mov " + var + "," + res  +"\n");
     }
@@ -445,27 +480,41 @@ public class SemanticActions {
     ////////////////////////////////////////////////////////////////////////////
     
     
+    public static void incCode(String var1) throws IOException {
+        writer.write("INC " + var1);
+    
+    }
+    
+    public static void decCode(String var1) throws IOException  {
+        writer.write("DEC " + var1);
+    }
+    
+    
+    
+    
+    
+    
     public static void generateCondCode(String var1, String var2, String op ,String label) {
         try {
             writer.write("cmp " + var1 + "," + var2 +"\n");
             switch (op) {
                 case "=": 
-                    writer.write("JNE" + label +"\n");
+                    writer.write("JNE " + label +"\n");
                     break;
                 case ">": 
-                    writer.write("JNGE" + label +"\n");
+                    writer.write("JNGE " + label +"\n");
                     break;
                 case "<": 
-                    writer.write("JNLE" + label +"\n");        
+                    writer.write("JNLE " + label +"\n");        
                     break;
                 case "!=":
-                    writer.write("JE" + label +"\n");
+                    writer.write("JE " + label +"\n");
                     break;
                 case "<=":
-                    writer.write("JNE" + label +"\n");
+                    writer.write("JNE " + label +"\n");
                     break;
                 case ">=":
-                    writer.write("JNG" + label +"\n");
+                    writer.write("JNG " + label +"\n");
                     break;
 
             }

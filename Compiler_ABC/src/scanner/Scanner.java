@@ -88,7 +88,7 @@ public class Scanner {
                 System.out.println(ST.getSymbol("ID"));
             }*/
             
-            
+            writer.close();
             
         }catch (Exception e){
             System.err.println(e.toString());

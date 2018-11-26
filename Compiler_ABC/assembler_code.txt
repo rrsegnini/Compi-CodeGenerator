@@ -1,0 +1,8 @@
+while_label1:
+cmp 8,a
+JNGEexit_label1
+mov ax,x
+add ax,1
+mov i,ax
+mov ax,y
+add ax,x
