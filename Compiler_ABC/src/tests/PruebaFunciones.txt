@@ -15,7 +15,7 @@ VAR
 
 
 
-FUNCTION funcion8():int 
+FUNCTION funcion8(int uno, string dos, int tres):int 
 Const
 x=8.5;
 b=1;

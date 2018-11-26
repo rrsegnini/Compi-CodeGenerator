@@ -188,7 +188,7 @@ function_header ::= IDENTIFIER:i OPEN_PARENTHESIS {:SemanticActions.rememberVar(
                     |
                     IDENTIFIER:i OPEN_PARENTHESIS {:SemanticActions.rememberVar(i.toString());:} 
                             Type IDENTIFIER:i2 {:SemanticActions.rememberVar(i2.toString());:} 
-                            parameter_list CLOSE_PARENTHESIS COLON Type {:SemanticActions.insertFunctionST();:}  BEGIN function_body END 
+                            parameter_list CLOSE_PARENTHESIS COLON Type {:SemanticActions.insertFunctionST();:} function_body BEGIN statements END 
 
                    /*| IDENTIFIER OPEN_PARENTHESIS Type IDENTIFIER parameter_list CLOSE_PARENTHESIS error:e BEGIN function_body END{:
                         parser.report_error("Tipo de retorno no especificado en la funcion\n", e); 
