@@ -151,13 +151,11 @@ public class SemanticActions {
                     int res = SemanticActions.constFoldint(SR_DO2.getToken(), SR_DO1.getToken(),
                             SR_OP.getToken());
                     resultStr = Integer.toString(res);
-                    System.out.println("Two constants");
             } else {
                 //GENERATES CODE FOR EXP
                 //generate code where SR_DO2 is the dividend and SR_DO1 is the divisor in div
                 SemanticActions.generateEvalCode(SR_DO2.getToken(), SR_DO1.getToken(), SR_OP.getToken());
-                System.out.println("Two operandos");    
-
+                
             }
             SemanticRegister SR_Type = new SemanticRegister(SR_Name.DATA_OBJECT,resultStr);
             stack.push(SR_Type);
