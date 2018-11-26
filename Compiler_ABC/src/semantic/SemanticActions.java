@@ -162,8 +162,19 @@ public class SemanticActions {
                 SemanticActions.generateEvalCode(SR_DO2.getToken(), SR_DO1.getToken(), SR_OP.getToken());
                 
             }
-            SemanticRegister SR_Type = new SemanticRegister(SR_Name.DATA_OBJECT,resultStr);
-            stack.push(SR_Type);
+            
+            // if :=
+            if (stack.top().getDescrp().equals(SR_Name.OPERATOR)) {
+                SemanticRegister SR_Object = new SemanticRegister(SR_Name.DATA_OBJECT,resultStr);
+                stack.push(SR_Object);
+                SemanticActions.assignVar();
+            
+            } else {
+                SemanticRegister SR_Object = new SemanticRegister(SR_Name.DATA_OBJECT,resultStr);
+                stack.push(SR_Object);
+            }
+            
+            
         }
     
     }
