@@ -264,7 +264,7 @@ if_statement ::= IF OPEN_PARENTHESIS {:SemanticActions.startIf(1);:}
                                                             
 
 
-cond ::= IDENTIFIER:i {:SemanticActions.rememberVar(i.toString());:} cond2| 
+cond ::= IDENTIFIER:i {:SemanticActions.rememberVariable(i.toString());:} cond2| 
             OPEN_PARENTHESIS cond CLOSE_PARENTHESIS cond2| 
             TRUE cond2| FALSE cond2 | literal cond2
             |fun_call cond2; 
@@ -340,14 +340,14 @@ fun_call ::= IDENTIFIER OPEN_PARENTHESIS exp parameter_list_call CLOSE_PARENTHES
 
 parameter_list_call ::= /*epsilon*/ | COMMA exp parameter_list_call ;
 
-assignment ::= IDENTIFIER:i {:SemanticActions.rememberVar(i.toString());:}  COLON 
+assignment ::= IDENTIFIER:i {:SemanticActions.rememberVar(i.toString());:} COLON 
             EQUAL:op {:SemanticActions.rememberOperator(op.toString());:}  
             exp {:SemanticActions.assignVar();:} SEMI 
-            | IDENTIFIER COLON EQUAL error:e SEMI {:
+            /*| IDENTIFIER COLON EQUAL error:e SEMI {:
                                                     parser.report_error("Error en la asignacion\n", e); 
                                                   :}
             | IDENTIFIER error:e SEMI {:parser.report_error("Error en la asignacion\n", e); :}
-             
+             */
             ;
 
 
