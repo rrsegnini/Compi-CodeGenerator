@@ -13,6 +13,11 @@ import parser.sym;
  * @author CASA
  */
 public class SymbolTable implements ISymbolTable{
+    public boolean symbolExists(String identifier){
+        //boolean symbolExists = ST.get(identifier) != null;
+        return LocalsST.containsKey(identifier) || GlobalsST.containsKey(identifier);
+    }
+    
     public boolean localSymbolExists(String identifier){
         //boolean symbolExists = ST.get(identifier) != null;
         return LocalsST.containsKey(identifier);

@@ -176,7 +176,7 @@ public class SemanticActions {
         // VERIFY IN SYMBOL'S TABLE
         SymbolTable ST = new SymbolTable();
         if (!ST.symbolExists(_token)) {
-            System.out.println("ERROR LA VARIABLE " + _token + "NO HA SIDO DECLARADA" );
+            System.out.println("ERROR LA VARIABLE " + _token + " NO HA SIDO DECLARADA" );
         }
 
         SemanticRegister SR_Var = new SemanticRegister(SR_Name.DATA_OBJECT,_token,ValueType.VAR);

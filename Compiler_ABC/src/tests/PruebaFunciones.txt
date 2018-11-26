@@ -9,7 +9,7 @@ VAR
 
 FUNCTION test():int
 VAR
-num,prueba,hola:char;
+i,a,x:char;
 CONST
 pi=3.48;
 
