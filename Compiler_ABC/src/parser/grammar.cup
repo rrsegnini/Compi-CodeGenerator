@@ -33,10 +33,15 @@ parser code {:
     }
 
 
+
     /* Metodo main para garantizar la ejecucion del analizador
        lexico y sintactico, ademas que se pase como parametro la tabla
        de simbolos correspondiente. */
     public static void main(String[] args){
+
+        // creando buffered writer 
+      BufferedWriter writer = new BufferedWriter(new FileWriter("assembler_code.txt"));
+      SemanticActions.setWriter(writer);
         try {
             System.out.println("\n*** Resultados finales ***");
         } catch (Exception ex) {
@@ -202,8 +207,11 @@ function_header ::= IDENTIFIER:i OPEN_PARENTHESIS {:SemanticActions.rememberVar(
                     :}*/;
 
 
-procedure_header ::= IDENTIFIER OPEN_PARENTHESIS CLOSE_PARENTHESIS BEGIN function_body END |
-                    IDENTIFIER OPEN_PARENTHESIS Type IDENTIFIER parameter_list CLOSE_PARENTHESIS BEGIN function_body END
+procedure_header ::= IDENTIFIER:i OPEN_PARENTHESIS {:SemanticActions.rememberVar(i.toString());:}
+                    CLOSE_PARENTHESIS BEGIN function_body END |
+                    IDENTIFIER:i OPEN_PARENTHESIS {:SemanticActions.rememberVar(i.toString());:} 
+                    Type IDENTIFIER :i2 {:SemanticActions.rememberVar(i2.toString());:}
+                    parameter_list CLOSE_PARENTHESIS BEGIN function_body END
                     | IDENTIFIER OPEN_PARENTHESIS error:e BEGIN function_body END{:
                         parser.report_error("Error en los argumentos de la procedimiento\n", e); 
                    :}
@@ -231,7 +239,9 @@ statements ::= if_statement statements |while_statement statements|
                 read statements |write statements| ;
 
 
-if_statement ::= IF OPEN_PARENTHESIS cond CLOSE_PARENTHESIS THEN statements else_statement END 
+if_statement ::= IF {:SemanticActions.startIf(1);:}  
+                 OPEN_PARENTHESIS cond {:SemanticActions.evalIf();:} 
+                 CLOSE_PARENTHESIS THEN statements else_statement END 
                 | IF OPEN_PARENTHESIS error:e CLOSE_PARENTHESIS THEN statements else_statement END {:
                                                                parser.report_error("Error en la condicion IF\n", e); 
                                                                :}
@@ -249,20 +259,24 @@ if_statement ::= IF OPEN_PARENTHESIS cond CLOSE_PARENTHESIS THEN statements else
                                                             
 
 
-cond ::= IDENTIFIER cond2| OPEN_PARENTHESIS cond CLOSE_PARENTHESIS cond2| 
+cond ::= IDENTIFIER:i {:SemanticActions.rememberVar(i.toString());:} cond2| OPEN_PARENTHESIS cond CLOSE_PARENTHESIS cond2| 
         TRUE cond2| FALSE cond2 | literal cond2
          |fun_call cond2; 
 
-cond2 ::= BOOLEAN_OPERATOR cond |EQUAL cond | /*epsilon*/ ;
+cond2 ::= BOOLEAN_OPERATOR:op {:SemanticActions.rememberOperator(i.toString());:} cond |
+          EQUAL:op {:SemanticActions.rememberOperator(i.toString());:}  cond | /*epsilon*/ ;
          
 
-else_statement ::= ELSE statements | /*epsilon*/ | ELSE BEGIN:e statements {:
-                                                               parser.report_error("Syntax error in line " + eleft + ": El else no lleva BEGIN\n", e); 
+else_statement ::= ELSE {:SemanticActions.startElse();:} statements {:SemanticActions.endIf();:}
+                  | /*epsilon*/ | ELSE BEGIN:e statements {:
+                                                            parser.report_error("Syntax error in line " + eleft + ": El else no lleva BEGIN\n", e); 
                                                                :}
                                                                ;
 
 
-while_statement ::= WHILE OPEN_PARENTHESIS cond CLOSE_PARENTHESIS  DO BEGIN statements END 
+while_statement ::= WHILE {:SemanticActions.startWhile(1);:} 
+                    OPEN_PARENTHESIS cond {:SemanticActions.evalWhile();:}
+                    CLOSE_PARENTHESIS  DO BEGIN statements {:SemanticActions.endWhile();:} END 
                     | WHILE error:e DO BEGIN statements END{:
                                                            parser.report_error("Error en la condicion en WHILE\n", e); 
                                                          :}
@@ -320,7 +334,9 @@ fun_call ::= IDENTIFIER OPEN_PARENTHESIS exp parameter_list_call CLOSE_PARENTHES
 
 parameter_list_call ::= /*epsilon*/ | COMMA exp parameter_list_call ;
 
-assignment ::= IDENTIFIER COLON EQUAL exp SEMI 
+assignment ::= IDENTIFIER:i {:SemanticActions.rememberVar(i.toString());:}  COLON 
+            EQUAL:op {:SemanticActions.rememberOperator(op.toString());:}  
+            exp {:SemanticActions.assignVar();:} SEMI 
             | IDENTIFIER COLON EQUAL error:e SEMI {:
                                                     parser.report_error("Error en la asignacion\n", e); 
                                                   :}

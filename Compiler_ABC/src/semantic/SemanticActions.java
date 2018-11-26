@@ -27,6 +27,11 @@ public class SemanticActions {
         this.stack = SemanticStack.getInstance();
         writer = _writer;
     }
+
+    public static void setWriter(BufferedWriter writer) {
+        SemanticActions.writer = writer;
+    }
+    
     
    
     ////////////////////////////////////////////////////////////////////////////
@@ -176,9 +181,9 @@ public class SemanticActions {
     ////////////////////////////////////////////////////////////////////////////
     
     public static void assignVa() {
-        SemanticRegister SR_DO1_var = stack.pop();
-        SemanticRegister SR_OP = stack.pop();
         SemanticRegister SR_DO2_value2beAssign = stack.pop();
+        SemanticRegister SR_OP = stack.pop();
+        SemanticRegister SR_DO1_var = stack.pop();
           
         // a = 2
         // a -> var
