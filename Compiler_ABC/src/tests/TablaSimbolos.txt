@@ -11,7 +11,7 @@ BEGIN
  END
 
 
-PROCEDURE funcion2( )
+(*PROCEDURE funcion2( )
 VAR
  f:char;
 BEGIN
@@ -21,7 +21,7 @@ BEGIN
  ELSE
 		//f--;
  END
-END
+END*)
 
 FUNCTION funcion3( int x, int y): int // son diferentes a las de la primer funcion
 BEGIN

@@ -8,6 +8,8 @@ package scanner;
 
 //import src.*;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.nio.file.Path;
@@ -69,6 +71,10 @@ public class Scanner {
             buffer = new BufferedReader(new FileReader(archivo));
             analizadorJFlex = new ScannerABC(buffer);
             p = new parser(analizadorJFlex);
+            
+            // creando buffered writer 
+            BufferedWriter writer = new BufferedWriter(new FileWriter("assembler_code.txt"));
+            SemanticActions.setWriter(writer);
             
             Object result = p.parse().value;
             SymbolTable ST = new SymbolTable();
