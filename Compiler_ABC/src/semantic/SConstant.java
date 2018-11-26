@@ -15,6 +15,13 @@ public class SConstant extends Symbol{
     public SConstant(String _value) {
         value = _value;
     }
+
+    @Override
+    public String toString() {
+        return value;
+    }
+    
+    
     
     
     
