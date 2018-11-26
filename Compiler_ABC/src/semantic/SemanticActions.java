@@ -106,6 +106,33 @@ public class SemanticActions {
         
     }
     
+    public static void insertProcedureST() {
+        
+        ArrayList parameters = new ArrayList<>();
+        SemanticRegister SR_DataObject = null;
+        SemanticRegister SR_ParameterType = null;
+        //SemanticRegister SR_ReturnType = stack.pop();
+        
+        while (stack.top() != null) {
+            ArrayList parameter = new ArrayList<String>();
+            
+            SR_DataObject = stack.pop();
+            if (stack.top() != null){                
+                SR_ParameterType = stack.pop();
+                parameter.add(SR_DataObject.getToken());
+                parameter.add(SR_ParameterType.getToken());
+                parameters.add(parameter);             
+            }else{
+                SProcedure procedure = new SProcedure(parameters);
+                SymbolTable ST = new SymbolTable();
+                ST.put(SR_DataObject.getToken(), procedure);
+            }
+            
+            
+        }
+        
+    }
+    
     
     ////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////

@@ -212,10 +212,11 @@ function_header ::= IDENTIFIER:i OPEN_PARENTHESIS {:SemanticActions.rememberVar(
 
 
 procedure_header ::= IDENTIFIER:i OPEN_PARENTHESIS {:SemanticActions.rememberVar(i.toString());:}
-                    CLOSE_PARENTHESIS BEGIN function_body END |
+                    CLOSE_PARENTHESIS {:SemanticActions.insertProcedureST();:} function_body BEGIN statements END 
+                    |
                     IDENTIFIER:i OPEN_PARENTHESIS {:SemanticActions.rememberVar(i.toString());:} 
                     Type IDENTIFIER :i2 {:SemanticActions.rememberVar(i2.toString());:}
-                    parameter_list CLOSE_PARENTHESIS BEGIN function_body END
+                    parameter_list CLOSE_PARENTHESIS {:SemanticActions.insertProcedureST();:} function_body BEGIN statements END
                     /*| IDENTIFIER OPEN_PARENTHESIS error:e BEGIN function_body END{:
                         parser.report_error("Error en los argumentos de la procedimiento\n", e); 
                    :}
