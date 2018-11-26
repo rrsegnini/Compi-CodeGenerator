@@ -23,10 +23,10 @@ var
 a,b,c:int;
 BEGIN
 
- funcion5:=0; 
+ //funcion5:=0; 
 END
 
 
 BEGIN
- write(3);
+ write(y+x);
 END

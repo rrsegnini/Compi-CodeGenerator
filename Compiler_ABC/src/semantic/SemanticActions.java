@@ -144,22 +144,24 @@ public class SemanticActions {
         puede ser una variable temporal o un registro
         */
         
-        // Executes Constant Folding
-        if (SR_DO1.getType().equals(ValueType.CONST) &&  
-                SR_DO2.getType().equals(ValueType.CONST) ) {
-                int res = SemanticActions.constFoldint(SR_DO2.getToken(), SR_DO1.getToken(),
-                        SR_OP.getToken());
-                resultStr = Integer.toString(res);
-                
-        } else {
-            //GENERATES CODE FOR EXP
-            //generate code where SR_DO2 is the dividend and SR_DO1 is the divisor in div
-            SemanticActions.generateEvalCode(SR_DO2.getToken(), SR_DO1.getToken(), SR_OP.getToken());
+        if (SR_DO1 != null && SR_DO2 != null){
+            // Executes Constant Folding
+            if (SR_DO1.getType().equals(ValueType.CONST) &&  
+                    SR_DO2.getType().equals(ValueType.CONST) ) {
+                    int res = SemanticActions.constFoldint(SR_DO2.getToken(), SR_DO1.getToken(),
+                            SR_OP.getToken());
+                    resultStr = Integer.toString(res);
+                    System.out.println("Two constants");
+            } else {
+                //GENERATES CODE FOR EXP
+                //generate code where SR_DO2 is the dividend and SR_DO1 is the divisor in div
+                SemanticActions.generateEvalCode(SR_DO2.getToken(), SR_DO1.getToken(), SR_OP.getToken());
+                System.out.println("Two operandos");    
 
-            
+            }
+            SemanticRegister SR_Type = new SemanticRegister(SR_Name.DATA_OBJECT,resultStr);
+            stack.push(SR_Type);
         }
-        SemanticRegister SR_Type = new SemanticRegister(SR_Name.DATA_OBJECT,resultStr);
-        stack.push(SR_Type);
     
     }
     

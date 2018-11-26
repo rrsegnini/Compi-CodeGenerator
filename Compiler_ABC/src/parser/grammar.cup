@@ -286,24 +286,25 @@ for_statement ::= FOR IDENTIFIER COLON EQUAL exp TO exp DO BEGIN statements END
                 | FOR error:e TO exp DO BEGIN statements END {: parser.report_error("Debe de asignar un valor\n", e); :}
                 | FOR error:e END {: parser.report_error("Error en el FOR", e); :} ;
 
-literal ::= FLOATING_POINT_NUMERIC_LITERAL:li {:System.out.println(li);:} | 
-        INTEGER_NUMERIC_LITERAL:li {:System.out.println(li);:}  | 
-        SCIENTIFIC_NOTATION_NUMERIC_LITERAL:li {:System.out.println(li);:}  | 
-        STRING_LITERAL:li {:System.out.println(li);:}  
-        | NUMERIC_CHAR_LITERAL:li {:System.out.println(li);:}  
-        | CHAR_LITERAL:li {:System.out.println(li);:} ;
+literal ::= FLOATING_POINT_NUMERIC_LITERAL:li {: SemanticActions.rememberConst(li.toString()); :}  | 
+        INTEGER_NUMERIC_LITERAL:li {: SemanticActions.rememberConst(li.toString()); :}  | 
+        SCIENTIFIC_NOTATION_NUMERIC_LITERAL:li {: SemanticActions.rememberConst(li.toString()); :}  | 
+        STRING_LITERAL:li {: SemanticActions.rememberConst(li.toString()); :}   
+        | NUMERIC_CHAR_LITERAL:li {: SemanticActions.rememberConst(li.toString()); :}  
+        | CHAR_LITERAL:li {: SemanticActions.rememberConst(li.toString()); :}  ;
 
-/*exp ::= IDENTIFIER | OPEN_PARENTHESIS exp CLOSE_PARENTHESIS | TRUE | FALSE |  
-          | literal | fun_def | fun_call | MINUSOP exp;*/
 
-exp ::= exp1 exp2;
+exp ::= exp1 exp2 {:SemanticActions.binaryEvaluation();:};
 
-exp1 ::= IDENTIFIER | ARITHMETICOP IDENTIFIER | 
+exp1 ::= IDENTIFIER:i {:SemanticActions.rememberVariable(i.toString());:}  
+        | ARITHMETICOP IDENTIFIER:i {:SemanticActions.rememberVariable(i.toString());:}  | 
         OPEN_PARENTHESIS exp CLOSE_PARENTHESIS | TRUE | FALSE |  
         literal | fun_call | MINUSOP exp;
 
-exp2 ::= BOOLEAN_OPERATOR exp exp2 | ARITHMETICOP exp exp2 | 
-           EQUAL exp exp2 | MINUSOP exp exp2 | /*epsilon*/ | ARITHMETICOP;
+exp2 ::= BOOLEAN_OPERATOR:op {:SemanticActions.rememberOperator(op.toString());:} exp exp2 
+        | ARITHMETICOP:op {:SemanticActions.rememberOperator(op.toString());:} exp exp2 | 
+           EQUAL exp exp2 //| MINUSOP exp exp2 | ARITHMETICOP
+            | /*epsilon*/ ;
 
 
 fun_call ::= IDENTIFIER OPEN_PARENTHESIS exp parameter_list_call CLOSE_PARENTHESIS SEMI
