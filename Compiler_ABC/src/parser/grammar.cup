@@ -314,7 +314,7 @@ literal ::= FLOATING_POINT_NUMERIC_LITERAL:li {: SemanticActions.rememberConst(l
         | CHAR_LITERAL:li {: SemanticActions.rememberConst(li.toString()); :}  ;
 
 
-exp ::= exp1 exp2 {:SemanticActions.binaryEvaluation();:};
+exp ::= exp1 exp2 ;
 
 exp1 ::= IDENTIFIER:i {:SemanticActions.rememberVariable(i.toString());:}  
         | ARITHMETICOP IDENTIFIER:i {:SemanticActions.rememberVariable(i.toString());:}  | 
@@ -327,7 +327,8 @@ exp2 ::= BOOLEAN_OPERATOR:op {:SemanticActions.rememberOperator(op.toString());:
             | /*epsilon*/ ;
 
 
-fun_call ::= IDENTIFIER OPEN_PARENTHESIS exp parameter_list_call CLOSE_PARENTHESIS SEMI
+fun_call ::= IDENTIFIER OPEN_PARENTHESIS exp {:SemanticActions.binaryEvaluation();:} 
+              parameter_list_call CLOSE_PARENTHESIS SEMI
         | IDENTIFIER OPEN_PARENTHESIS CLOSE_PARENTHESIS SEMI
         | IDENTIFIER OPEN_PARENTHESIS error:e CLOSE_PARENTHESIS SEMI {: parser.report_error("Error en los parametros al llamar la funcion\n", e); :}
         | IDENTIFIER  error:e CLOSE_PARENTHESIS SEMI {: parser.report_error("Error en los parametros al llamar la funcion\n", e); :}
@@ -338,11 +339,11 @@ fun_call ::= IDENTIFIER OPEN_PARENTHESIS exp parameter_list_call CLOSE_PARENTHES
 
 
 
-parameter_list_call ::= /*epsilon*/ | COMMA exp parameter_list_call ;
+parameter_list_call ::= /*epsilon*/ | COMMA exp {:SemanticActions.binaryEvaluation();:} parameter_list_call ;
 
-assignment ::= IDENTIFIER:i {:SemanticActions.rememberVar(i.toString());:} COLON 
+assignment ::= IDENTIFIER:i {:SemanticActions.rememberVariable(i.toString());:} COLON 
             EQUAL:op {:SemanticActions.rememberOperator(op.toString());:}  
-            exp {:SemanticActions.assignVar();:} SEMI 
+            exp  {:SemanticActions.binaryEvaluation();:} SEMI 
             /*| IDENTIFIER COLON EQUAL error:e SEMI {:
                                                     parser.report_error("Error en la asignacion\n", e); 
                                                   :}
@@ -359,7 +360,7 @@ read ::= READ OPEN_PARENTHESIS IDENTIFIER CLOSE_PARENTHESIS SEMI
 
         ;
 
-write ::= WRITE OPEN_PARENTHESIS exp parameter_list_call CLOSE_PARENTHESIS SEMI
+write ::= WRITE OPEN_PARENTHESIS exp {:SemanticActions.binaryEvaluation();:} parameter_list_call CLOSE_PARENTHESIS SEMI
             | WRITE OPEN_PARENTHESIS error:e CLOSE_PARENTHESIS SEMI {:parser.report_error("Error en el WRITE: se necesita al menos un parametro\n", e);:};
 
 

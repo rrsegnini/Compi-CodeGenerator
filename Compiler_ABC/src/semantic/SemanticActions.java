@@ -365,6 +365,8 @@ public class SemanticActions {
                 case "*":
                     SemanticActions.multCode(var1, var2);
                     break;
+                case "=":
+                    SemanticActions.assignmentCode(var1,var2);
 
             }
         } catch (Exception e) {}
