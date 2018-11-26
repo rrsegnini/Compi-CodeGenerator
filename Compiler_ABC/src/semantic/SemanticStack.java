@@ -55,8 +55,8 @@ public class SemanticStack implements Stack {
     public SemanticRegister search(SR_Name descrp) {
         SemanticRegister sr = null;
         for (int i = 0; i < storedItems.size(); i++) {
-            SemanticRegister sr1 = storedItems.get(i);
-            if (sr1.getDescrp().equals(this))
+            SemanticRegister sr1 = storedItems.get(i);            
+            if (sr1.getDescrp().equals(descrp))
                 sr = sr1; 
             
         }
@@ -82,6 +82,13 @@ public class SemanticStack implements Stack {
         }
         return semanticRegister;
     }
+
+    @Override
+    public String toString() {
+        return "SemanticStack{" + "storedItems=" + storedItems + '}';
+    }
+    
+    
     
     
     

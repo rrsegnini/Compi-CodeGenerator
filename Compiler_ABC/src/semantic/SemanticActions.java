@@ -279,15 +279,23 @@ public class SemanticActions {
         }
         
         stack.push(SR_WHILE);
+        SemanticRegister SR_WHILEtemp = stack.search(SR_Name.WHILE);
+        if (SR_WHILEtemp != null){
+            System.out.println("No es nulo :)");
+        }
     }
 
     public static void evalWhile() {
+        if (stack.top() != null){
+            System.out.println(stack.toString());
+        }
         SemanticRegister SR_WHILE = stack.search(SR_Name.WHILE);
         String exitLabel = SR_WHILE.getLabel2();
         SemanticRegister SR_DO1 = stack.pop();
         SemanticRegister SR_OP = stack.pop();
         SemanticRegister SR_DO2 = stack.pop();
         SemanticActions.generateCondCode(SR_DO1.getToken(), SR_DO2.getToken(), SR_OP.getToken(), exitLabel);
+    
     }
     
     public static void endWhile() {

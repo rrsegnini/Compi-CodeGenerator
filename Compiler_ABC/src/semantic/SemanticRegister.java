@@ -80,6 +80,12 @@ public class SemanticRegister {
     public void setLabel2(String label2) {
         this.label2 = label2;
     }
+
+    @Override
+    public String toString() {
+        return "SemanticRegister{" + "descrp=" + descrp + ", value=" + value + ", type=" + type + ", label1=" + label1 + ", label2=" + label2 + "}\n";
+    }
+    
     
     
     
