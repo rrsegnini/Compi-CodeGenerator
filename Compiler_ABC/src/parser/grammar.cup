@@ -124,7 +124,10 @@ non terminal program,constants,constants_body,
             read,write,
             exp1,exp2,cond2, literal, 
             procedure_header,statement,
-            recovery,literal_const;
+            recovery,literal_const,
+            constants_local,constants_body_local,
+            literal_const_local, globals_body_local,
+            globals_local;
 
 precedence left ARITHMETICOP, BOOLEAN_OPERATOR, EQUAL, MINUSOP,IDENTIFIER,BEGIN,COMMA,COLON;
 
@@ -151,19 +154,19 @@ constants_body ::= IDENTIFIER:i EQUAL  {:SemanticActions.rememberConst(i.toStrin
                     | /*epsilon*/;
 
 
-literal_const ::= FLOATING_POINT_NUMERIC_LITERAL:li {:SemanticActions.insertConstTS(li.toString());:} | 
-        INTEGER_NUMERIC_LITERAL:li {:SemanticActions.insertConstTS(li.toString());:}  | 
-        SCIENTIFIC_NOTATION_NUMERIC_LITERAL:li {:SemanticActions.insertConstTS(li.toString());:}   | 
-        STRING_LITERAL:li {:SemanticActions.insertConstTS(li.toString());:} 
-        | NUMERIC_CHAR_LITERAL:li {:SemanticActions.insertConstTS(li.toString());:}   
-        | CHAR_LITERAL:li {:SemanticActions.insertConstTS(li.toString());:}  ;
+literal_const ::= FLOATING_POINT_NUMERIC_LITERAL:li {:SemanticActions.insertGlobalConstTS(li.toString());:} | 
+        INTEGER_NUMERIC_LITERAL:li {:SemanticActions.insertGlobalConstTS(li.toString());:}  | 
+        SCIENTIFIC_NOTATION_NUMERIC_LITERAL:li {:SemanticActions.insertGlobalConstTS(li.toString());:}   | 
+        STRING_LITERAL:li {:SemanticActions.insertGlobalConstTS(li.toString());:} 
+        | NUMERIC_CHAR_LITERAL:li {:SemanticActions.insertGlobalConstTS(li.toString());:}   
+        | CHAR_LITERAL:li {:SemanticActions.insertGlobalConstTS(li.toString());:}  ;
 
 
 
 globals ::= VAR globals_body ;
 
 
-globals_body ::= /*epsilon*/ | IDENTIFIER:i  {:SemanticActions.rememberVar(i.toString());:}  globals_list COLON Type SEMI {:SemanticActions.insertVarST();:} globals_body /* 
+globals_body ::= /*epsilon*/ | IDENTIFIER:i  {:SemanticActions.rememberVar(i.toString());:}  globals_list COLON Type SEMI {:SemanticActions.insertGlobalVarST();:} globals_body /* 
                  |  IDENTIFIER globals_list COLON error:e SEMI globals_body {: parser.report_error("Tipo no existe\n", e); :} 
                  |  error:e SEMI {: 
                                   parser.report_error("Error en VAR\n", e); 
@@ -181,7 +184,7 @@ Type ::= INT:t {:SemanticActions.rememberType(t.toString());:}
         ;
 
 
-functions ::= FUNCTION function_header functions| PROCEDURE procedure_header functions | FUNCTION error:e END {:
+functions ::= FUNCTION {:SemanticActions.resetLocalsST();:} function_header functions| PROCEDURE {:SemanticActions.resetLocalsST();:} procedure_header functions | FUNCTION error:e END {:
                                                                parser.report_error("Error al declarar la funcion\n", e); 
                                                                :}  
                                                                 | PROCEDURE error:e END {:
@@ -233,12 +236,30 @@ parameter_list ::= COMMA Type IDENTIFIER:i2 {:SemanticActions.rememberVar(i2.toS
                 | /*epsilon*/;
 
 
-function_body ::= constants globals statements 
-                 |globals constants statements 
-                | globals statements 
-                | constants statements 
+function_body ::= constants_local globals_local statements 
+                 |globals_local constants_local statements 
+                | globals_local statements 
+                | constants_local statements 
                 | statements;
 
+globals_local ::= VAR globals_body_local ;
+
+
+globals_body_local ::= /*epsilon*/ | IDENTIFIER:i  {:SemanticActions.rememberVar(i.toString());:}  
+                globals_list COLON Type SEMI {:SemanticActions.insertLocalVarST();:} globals_body_local
+                ;
+constants_local ::= CONST constants_body_local;
+
+constants_body_local ::= IDENTIFIER:i EQUAL  {:SemanticActions.rememberConst(i.toString());:}  literal_const_local SEMI constants_body_local
+                    |  IDENTIFIER EQUAL error:e SEMI {: parser.report_error("Error al declarar una constante\n", e);:}
+                    | /*epsilon*/;
+
+literal_const_local ::= FLOATING_POINT_NUMERIC_LITERAL:li {:SemanticActions.insertLocalConstTS(li.toString());:} | 
+        INTEGER_NUMERIC_LITERAL:li {:SemanticActions.insertLocalConstTS(li.toString());:}  | 
+        SCIENTIFIC_NOTATION_NUMERIC_LITERAL:li {:SemanticActions.insertLocalConstTS(li.toString());:}   | 
+        STRING_LITERAL:li {:SemanticActions.insertLocalConstTS(li.toString());:} 
+        | NUMERIC_CHAR_LITERAL:li {:SemanticActions.insertLocalConstTS(li.toString());:}   
+        | CHAR_LITERAL:li {:SemanticActions.insertLocalConstTS(li.toString());:}  ;
 
 statements ::= if_statement statements |while_statement statements|
                 for_statement statements|assignment statements | fun_call statements|

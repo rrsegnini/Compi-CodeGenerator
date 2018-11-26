@@ -10,3 +10,15 @@ JNGE exit_label2
 mov ax,x
 add ax,1
 mov i,ax
+while_label3:
+cmp 8,a
+JNGE exit_label3
+mov ax,x
+add ax,1
+mov i,ax
+while_label4:
+cmp 8,a
+JNGE exit_label4
+mov ax,x
+add ax,1
+mov i,ax

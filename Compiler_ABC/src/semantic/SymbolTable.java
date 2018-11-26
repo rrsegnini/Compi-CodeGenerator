@@ -13,30 +13,39 @@ import parser.sym;
  * @author CASA
  */
 public class SymbolTable implements ISymbolTable{
-    public boolean symbolExists(String identifier){
+    public boolean localSymbolExists(String identifier){
         //boolean symbolExists = ST.get(identifier) != null;
-        return ST.containsKey(identifier);
+        return LocalsST.containsKey(identifier);
     }
     
-    public Symbol getSymbol(String identifier){
-        return (Symbol)ST.get(identifier);
+    public boolean globalSymbolExists(String identifier){
+        //boolean symbolExists = ST.get(identifier) != null;
+        return GlobalsST.containsKey(identifier);
     }
     
-    public void put(String identifier, Symbol type){
-        ST.put(identifier, type);
+    public Symbol getLocalSymbol(String identifier){
+        return (Symbol)GlobalsST.get(identifier);
+    }
+    
+    public Symbol getGlobalSymbol(String identifier){
+        return (Symbol)GlobalsST.get(identifier);
+    }
+    
+    public void putLocal(String identifier, Symbol type){
+        LocalsST.put(identifier, type);
+    }
+    
+    public void putGlobal(String identifier, Symbol type){
+        GlobalsST.put(identifier, type);
+    }
+    
+    public void resetLocalsST(){
+        LocalsST.clear();
     }
 
     @Override
     public String toString() {
-        return ST.toString();
-        
-        /*String toStringRet = "";   
-        java.util.Set<String> keys = ST.keySet();
-        for(String key: keys){           
-            
-            toStringRet += key.toString() + "\n";
-        }
-        return toStringRet;*/
+        return GlobalsST.toString();
     }
     
     

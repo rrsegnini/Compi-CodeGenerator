@@ -53,33 +53,43 @@ public class SemanticActions {
         stack.push(SR_Id);
     }
     
-    public static void insertVarST() {
-        /// MAL ES QUE NO SE COMO HACER PARA INSERTARLA CORRECTAMENTE
-        // VAR TIENE UN VALUE, EL VALUE ES EL TOKEN. ES DECIR SI ES VAR A ES A
-        // ESO ES LO QUE ESTA EN EL REGISTRO SEMANTICO
-        // PERO ENTONCES TENGO QUE GUARDAR EL VALOR
-        // ENTONCES NO SE QUE TENGO QUE MANDARLE AL PUT.
-        // SI TECNICAMENTE EL SYMBOL YA TIENE LA VARIABLE EN SI, ES DECIR EL 
-        // PERDON POR LA MASYUSCULA FUE SIN QUERER Y CUANDO ME DI CUENTA NO IBA A 
-        // BORRARLO Y A VOLVERLO A ESCRIBID XD JAJAJAJA
-        
-        //SemanticRegister SR_Type = stack.search(SR_Name.TYPE);
+    public static void insertGlobalVarST() {        
         SemanticRegister SR_Type = stack.pop();
         while (stack.top() != null) {
             SemanticRegister SR_DataObject = stack.pop();
             SVariable var = new SVariable(SR_Type.getToken());
             SymbolTable ts = new SymbolTable();
-            ts.put(SR_DataObject.getToken(), var);
+            ts.putGlobal(SR_DataObject.getToken(), var);
             
         }
         
     }
     
-    public static void insertConstTS(String _value) {
+    public static void insertLocalVarST() {        
+        SemanticRegister SR_Type = stack.pop();
+        while (stack.top() != null) {
+            SemanticRegister SR_DataObject = stack.pop();
+            SVariable var = new SVariable(SR_Type.getToken());
+            SymbolTable ts = new SymbolTable();
+            ts.putLocal(SR_DataObject.getToken(), var);
+            
+        }
+        
+    }
+    
+    public static void insertGlobalConstTS(String _value) {
         SemanticRegister constantSR = stack.pop();
         SConstant constant = new SConstant(_value);
         SymbolTable ts = new SymbolTable();
-        ts.put(constantSR.getToken(), constant);
+        ts.putGlobal(constantSR.getToken(), constant);
+
+    }
+    
+    public static void insertLocalConstTS(String _value) {
+        SemanticRegister constantSR = stack.pop();
+        SConstant constant = new SConstant(_value);
+        SymbolTable ts = new SymbolTable();
+        ts.putLocal(constantSR.getToken(), constant);
 
     }
     
@@ -103,13 +113,15 @@ public class SemanticActions {
                 SFunction function = new SFunction(SR_ReturnType.getToken(),
                                         parameters);
                 SymbolTable ST = new SymbolTable();
-                ST.put(SR_DataObject.getToken(), function);
+                ST.putGlobal(SR_DataObject.getToken(), function);
             }
             
             
         }
         
     }
+    
+    
     
     public static void insertProcedureST() {
         
@@ -130,12 +142,17 @@ public class SemanticActions {
             }else{
                 SProcedure procedure = new SProcedure(parameters);
                 SymbolTable ST = new SymbolTable();
-                ST.put(SR_DataObject.getToken(), procedure);
+                ST.putGlobal(SR_DataObject.getToken(), procedure);
             }
             
             
         }
         
+    }
+    
+    public static void resetLocalsST() {
+        SymbolTable ST = new SymbolTable();    
+        ST.resetLocalsST();
     }
     
     
@@ -344,16 +361,9 @@ public class SemanticActions {
         }
         
         stack.push(SR_WHILE);
-        SemanticRegister SR_WHILEtemp = stack.search(SR_Name.WHILE);
-        if (SR_WHILEtemp != null){
-            System.out.println("No es nulo :)");
-        }
     }
 
     public static void evalWhile() {
-        if (stack.top() != null){
-            System.out.println(stack.toString());
-        }
         SemanticRegister SR_WHILE = stack.search(SR_Name.WHILE);
         String exitLabel = SR_WHILE.getLabel2();
         SemanticRegister SR_DO1 = stack.pop();

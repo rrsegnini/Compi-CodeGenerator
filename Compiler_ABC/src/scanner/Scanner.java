@@ -64,7 +64,7 @@ public class Scanner {
             BufferedReader buffer = new BufferedReader(new FileReader(archivo));
             ScannerABC analizadorJFlex = new ScannerABC(buffer);
             parser p = new parser(analizadorJFlex); 
-            printScannedTokens(analizadorJFlex);
+            //printScannedTokens(analizadorJFlex);
             printLexicalErrors(analizadorJFlex);
             
             
@@ -79,15 +79,10 @@ public class Scanner {
             
             Object result = p.parse().value;
             SymbolTable ST = new SymbolTable();
-            System.out.println(ST.toString());
-            if (ST.symbolExists("b")){
-                System.out.println("Existe :)");
-            }
+            System.out.println("\t TABLA DE SIMBOLOS \n" + ST.toString());
             
-            /*ST.put("ID", new SFunction("INT"));
-            if (ST.symbolExists("ID")){
-                System.out.println(ST.getSymbol("ID"));
-            }*/
+           
+           
             
             writer.close();
             

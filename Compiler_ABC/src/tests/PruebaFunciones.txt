@@ -7,6 +7,11 @@ VAR
 
  numero,limite,contador:int;  // todo esta bien
 
+FUNCTION test():int
+VAR
+num,prueba,hola:char;
+CONST
+pi=3.48;
 
 BEGIN
         WHILE (a>8) DO
@@ -16,6 +21,29 @@ BEGIN
 
         WHILE (a>8) DO
 		BEGIN
+                    function6();
 		   i:=x+1;
         END
+END
+
+FUNCTION test2():int
+VAR
+num,prueba,hola:char;
+CONST
+pi=3.48;
+
+BEGIN
+        WHILE (a>8) DO
+		BEGIN
+		   i:=x+1;
+        END
+
+        WHILE (a>8) DO
+		BEGIN
+                    function6();
+		   i:=x+1;
+        END
+END
+
+BEGIN
 END
