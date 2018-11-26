@@ -54,22 +54,19 @@ public class SemanticActions {
     }
     
     public static void insertVarST() {
-        /// MAL ES QUE NO SE COMO HACER PARA INSERTARLA CORRECTAMENTE
-        // VAR TIENE UN VALUE, EL VALUE ES EL TOKEN. ES DECIR SI ES VAR A ES A
-        // ESO ES LO QUE ESTA EN EL REGISTRO SEMANTICO
-        // PERO ENTONCES TENGO QUE GUARDAR EL VALOR
-        // ENTONCES NO SE QUE TENGO QUE MANDARLE AL PUT.
-        // SI TECNICAMENTE EL SYMBOL YA TIENE LA VARIABLE EN SI, ES DECIR EL 
-        // PERDON POR LA MASYUSCULA FUE SIN QUERER Y CUANDO ME DI CUENTA NO IBA A 
-        // BORRARLO Y A VOLVERLO A ESCRIBID XD JAJAJAJA
-        
-        //SemanticRegister SR_Type = stack.search(SR_Name.TYPE);
-        SemanticRegister SR_Type = stack.pop();
+       SemanticRegister SR_Type = stack.pop();
         while (stack.top() != null) {
             SemanticRegister SR_DataObject = stack.pop();
-            SVariable var = new SVariable(SR_Type.getToken());
+            String token = SR_Type.getToken();
+            SVariable var = new SVariable(token);
             SymbolTable ts = new SymbolTable();
-            ts.put(SR_DataObject.getToken(), var);
+            //Error Variable doblemente declarada
+            if (ts.symbolExists(token)) {
+                System.out.println("ERROR LA VARIABLE " +token + "FUE DECLARADA PREVIAMENTE" );
+            } else {
+                ts.put(SR_DataObject.getToken(), var);
+            }
+            
             
         }
         
@@ -155,6 +152,11 @@ public class SemanticActions {
     
     public static void rememberVariable(String _token) {
         // VERIFY IN SYMBOL'S TABLE
+        SymbolTable ST = new SymbolTable();
+        if (!ST.symbolExists(_token)) {
+            System.out.println("ERROR LA VARIABLE " + _token + "NO HA SIDO DECLARADA" );
+        }
+        
         SemanticRegister SR_Var = new SemanticRegister(SR_Name.DATA_OBJECT,_token,ValueType.VAR);
         stack.push(SR_Var);
     }
