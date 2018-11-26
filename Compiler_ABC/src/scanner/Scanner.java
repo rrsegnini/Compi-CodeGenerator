@@ -54,7 +54,7 @@ public class Scanner {
     public static void main(String [ ] args){
 
         try{
-            File file = new File("src/tests/TablaSimbolos.txt");
+            File file = new File("src/tests/PruebaFunciones.txt");
 
             String path = file.getAbsolutePath();
             String archivo = path;
