@@ -154,19 +154,19 @@ constants_body ::= IDENTIFIER:i EQUAL  {:SemanticActions.rememberConst(i.toStrin
                     | /*epsilon*/;
 
 
-literal_const ::= FLOATING_POINT_NUMERIC_LITERAL:li {:SemanticActions.insertGlobalConstTS(li.toString());:} | 
-        INTEGER_NUMERIC_LITERAL:li {:SemanticActions.insertGlobalConstTS(li.toString());:}  | 
-        SCIENTIFIC_NOTATION_NUMERIC_LITERAL:li {:SemanticActions.insertGlobalConstTS(li.toString());:}   | 
-        STRING_LITERAL:li {:SemanticActions.insertGlobalConstTS(li.toString());:} 
-        | NUMERIC_CHAR_LITERAL:li {:SemanticActions.insertGlobalConstTS(li.toString());:}   
-        | CHAR_LITERAL:li {:SemanticActions.insertGlobalConstTS(li.toString());:}  ;
+literal_const ::= FLOATING_POINT_NUMERIC_LITERAL:li {:SemanticActions.insertGlobalConstTS(li.toString(),lileft+1);:} | 
+        INTEGER_NUMERIC_LITERAL:li {:SemanticActions.insertGlobalConstTS(li.toString(),lileft+1);:}  | 
+        SCIENTIFIC_NOTATION_NUMERIC_LITERAL:li {:SemanticActions.insertGlobalConstTS(li.toString(),lileft+1);:}   | 
+        STRING_LITERAL:li {:SemanticActions.insertGlobalConstTS(li.toString(),lileft+1);:} 
+        | NUMERIC_CHAR_LITERAL:li {:SemanticActions.insertGlobalConstTS(li.toString(),lileft+1);:}   
+        | CHAR_LITERAL:li {:SemanticActions.insertGlobalConstTS(li.toString(),lileft+1);:}  ;
 
 
 
 globals ::= VAR globals_body ;
 
 
-globals_body ::= /*epsilon*/ | IDENTIFIER:i  {:SemanticActions.rememberVar(i.toString());:}  globals_list COLON Type SEMI {:SemanticActions.insertGlobalVarST();:} globals_body /* 
+globals_body ::= /*epsilon*/ | IDENTIFIER:i  {:SemanticActions.rememberVar(i.toString());:}  globals_list COLON Type SEMI {:SemanticActions.insertGlobalVarST(ileft+1);:} globals_body /* 
                  |  IDENTIFIER globals_list COLON error:e SEMI globals_body {: parser.report_error("Tipo no existe\n", e); :} 
                  |  error:e SEMI {: 
                                   parser.report_error("Error en VAR\n", e); 
@@ -196,11 +196,11 @@ functions ::= FUNCTION {:SemanticActions.resetLocalsST();:} function_header func
 
 
 function_header ::= IDENTIFIER:i OPEN_PARENTHESIS {:SemanticActions.rememberVar(i.toString());:} 
-                    CLOSE_PARENTHESIS COLON Type {:SemanticActions.insertFunctionST();:} function_body BEGIN statements END 
+                    CLOSE_PARENTHESIS COLON Type {:SemanticActions.insertFunctionST(ileft+1);:} function_body BEGIN statements END 
                     |
                     IDENTIFIER:i OPEN_PARENTHESIS {:SemanticActions.rememberVar(i.toString());:} 
                             Type IDENTIFIER:i2 {:SemanticActions.rememberVar(i2.toString());:} 
-                            parameter_list CLOSE_PARENTHESIS COLON Type {:SemanticActions.insertFunctionST();:} function_body BEGIN statements END 
+                            parameter_list CLOSE_PARENTHESIS COLON Type {:SemanticActions.insertFunctionST(ileft+1);:} function_body BEGIN statements END 
 
                    /*| IDENTIFIER OPEN_PARENTHESIS Type IDENTIFIER parameter_list CLOSE_PARENTHESIS error:e BEGIN function_body END{:
                         parser.report_error("Tipo de retorno no especificado en la funcion\n", e); 
@@ -215,11 +215,11 @@ function_header ::= IDENTIFIER:i OPEN_PARENTHESIS {:SemanticActions.rememberVar(
 
 
 procedure_header ::= IDENTIFIER:i OPEN_PARENTHESIS {:SemanticActions.rememberVar(i.toString());:}
-                    CLOSE_PARENTHESIS {:SemanticActions.insertProcedureST();:} function_body BEGIN statements END 
+                    CLOSE_PARENTHESIS {:SemanticActions.insertProcedureST(ileft+1);:} function_body BEGIN statements END 
                     |
                     IDENTIFIER:i OPEN_PARENTHESIS {:SemanticActions.rememberVar(i.toString());:} 
                     Type IDENTIFIER :i2 {:SemanticActions.rememberVar(i2.toString());:}
-                    parameter_list CLOSE_PARENTHESIS {:SemanticActions.insertProcedureST();:} function_body BEGIN statements END
+                    parameter_list CLOSE_PARENTHESIS {:SemanticActions.insertProcedureST(ileft+1);:} function_body BEGIN statements END
                     /*| IDENTIFIER OPEN_PARENTHESIS error:e BEGIN function_body END{:
                         parser.report_error("Error en los argumentos de la procedimiento\n", e); 
                    :}
@@ -247,7 +247,7 @@ globals_local ::= VAR globals_body_local ;
 
 
 globals_body_local ::= /*epsilon*/ | IDENTIFIER:i  {:SemanticActions.rememberVar(i.toString());:}  
-                globals_list COLON Type SEMI {:SemanticActions.insertLocalVarST();:} globals_body_local
+                globals_list COLON Type SEMI {:SemanticActions.insertLocalVarST(ileft+1);:} globals_body_local
                 ;
 constants_local ::= CONST constants_body_local;
 
@@ -256,12 +256,12 @@ constants_body_local ::= IDENTIFIER:i EQUAL  {:SemanticActions.rememberConst(i.t
                     |  IDENTIFIER EQUAL error:e SEMI {: parser.report_error("Error al declarar una constante\n", e);:}
                     | /*epsilon*/;
 
-literal_const_local ::= FLOATING_POINT_NUMERIC_LITERAL:li {:SemanticActions.insertLocalConstTS(li.toString());:} | 
-        INTEGER_NUMERIC_LITERAL:li {:SemanticActions.insertLocalConstTS(li.toString());:}  | 
-        SCIENTIFIC_NOTATION_NUMERIC_LITERAL:li {:SemanticActions.insertLocalConstTS(li.toString());:}   | 
-        STRING_LITERAL:li {:SemanticActions.insertLocalConstTS(li.toString());:} 
-        | NUMERIC_CHAR_LITERAL:li {:SemanticActions.insertLocalConstTS(li.toString());:}   
-        | CHAR_LITERAL:li {:SemanticActions.insertLocalConstTS(li.toString());:}  ;
+literal_const_local ::= FLOATING_POINT_NUMERIC_LITERAL:li {:SemanticActions.insertLocalConstTS(li.toString(),lileft+1);:} | 
+        INTEGER_NUMERIC_LITERAL:li {:SemanticActions.insertLocalConstTS(li.toString(),lileft+1);:}  | 
+        SCIENTIFIC_NOTATION_NUMERIC_LITERAL:li {:SemanticActions.insertLocalConstTS(li.toString(),lileft+1);:}   | 
+        STRING_LITERAL:li {:SemanticActions.insertLocalConstTS(li.toString(),lileft+1);:} 
+        | NUMERIC_CHAR_LITERAL:li {:SemanticActions.insertLocalConstTS(li.toString(),lileft+1);:}   
+        | CHAR_LITERAL:li {:SemanticActions.insertLocalConstTS(li.toString(),lileft+1);:}  ;
 
 statements ::= if_statement statements |while_statement statements|
                 for_statement statements|assignment statements | fun_call statements|
@@ -281,14 +281,14 @@ if_statement ::= IF OPEN_PARENTHESIS {:SemanticActions.startIf(1);:}
                                                                parser.report_error("Syntax error en la condicion IF, falta parentesis\n", e); 
                                                                :}
                 | IF OPEN_PARENTHESIS cond CLOSE_PARENTHESIS THEN BEGIN:e statements else_statement END {:
-                                                               parser.report_error("Syntax error in line " + eleft + ": El if no lleva BEGIN\n", e); 
+                                                               parser.report_error("Syntax error in line " + eleft+1 + ": El if no lleva BEGIN\n", e); 
                                                                :}*/
                 
                                                                ;
                                                             
 
 
-cond ::= IDENTIFIER:i {:SemanticActions.rememberVariable(i.toString());:} cond2| 
+cond ::= IDENTIFIER:i {:SemanticActions.rememberVariable(i.toString(),ileft+1);:} cond2| 
             OPEN_PARENTHESIS cond CLOSE_PARENTHESIS cond2| 
             TRUE cond2| FALSE cond2 | literal cond2
             |fun_call cond2; 
@@ -299,7 +299,7 @@ cond2 ::= BOOLEAN_OPERATOR:op {:SemanticActions.rememberOperator(op.toString());
 
 else_statement ::= ELSE {:SemanticActions.startElse();:} statements {:SemanticActions.endIf();:}
                   | /*epsilon*/ | ELSE BEGIN:e statements {:
-                                                            parser.report_error("Syntax error in line " + eleft + ": El else no lleva BEGIN\n", e); 
+                                                            parser.report_error("Syntax error in line " + eleft+1 + ": El else no lleva BEGIN\n", e); 
                                                                :}
                                                                ;
 
@@ -340,14 +340,14 @@ literal ::= FLOATING_POINT_NUMERIC_LITERAL:li {: SemanticActions.rememberConst(l
 
 exp ::= exp1 exp2 ;
 
-exp1 ::= IDENTIFIER:i {:SemanticActions.rememberVariable(i.toString());:}  
-        | ARITHMETICOP IDENTIFIER:i {:SemanticActions.rememberVariable(i.toString());:}  | 
+exp1 ::= IDENTIFIER:i {:SemanticActions.rememberVariable(i.toString(),ileft+1);:}  
+        | ARITHMETICOP IDENTIFIER:i {:SemanticActions.rememberVariable(i.toString(),ileft+1);:}  | 
         OPEN_PARENTHESIS exp CLOSE_PARENTHESIS | TRUE | FALSE |  
         literal | fun_call | MINUSOP exp | ARITHMETICOP ;
 
 exp2 ::= BOOLEAN_OPERATOR:op {:SemanticActions.rememberOperator(op.toString());:} exp exp2 
         | ARITHMETICOP:op {:SemanticActions.rememberOperator(op.toString());:} exp exp2 | 
-           EQUAL exp exp2 | MINUSOP exp exp2 
+           EQUAL exp exp2 | MINUSOP:op {:SemanticActions.rememberOperator(op.toString());:} exp exp2 
             | /*epsilon*/ ;
 
 
@@ -365,7 +365,7 @@ fun_call ::= IDENTIFIER  OPEN_PARENTHESIS exp {:SemanticActions.binaryEvaluation
 
 parameter_list_call ::= /*epsilon*/ | COMMA exp {:SemanticActions.binaryEvaluation();:} parameter_list_call ;
 
-assignment ::= IDENTIFIER:i {:SemanticActions.rememberVariable(i.toString());:} 
+assignment ::= IDENTIFIER:i {:SemanticActions.rememberVariable(i.toString(),ileft+1);:} 
             COLON EQUAL:op {:SemanticActions.rememberOperator(op.toString());:}  
             exp  {:SemanticActions.binaryEvaluation();:} SEMI 
             /*| IDENTIFIER COLON EQUAL error:e SEMI {:

@@ -30,6 +30,9 @@ add ax,1
 mov i,ax
 JMPwhile_label4
 exit_label4:
+mov ax,x
+sub ax,y
+mov xssss,ax
 mov ax,a
 mul b
 mov c,ax
