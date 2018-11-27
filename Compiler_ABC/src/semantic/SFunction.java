@@ -10,8 +10,8 @@ import java.util.ArrayList;
  * @author CASA
  */
 public class SFunction extends Symbol{
-    public static String returnType;
-    public static ArrayList<ArrayList<String>> parameters;
+    public String returnType;
+    public ArrayList<ArrayList<String>> parameters;
 
     public SFunction(String _returnType) {
         this.returnType = _returnType;

@@ -12,7 +12,7 @@ import java.util.ArrayList;
  * @author CASA
  */
 public class SProcedure extends Symbol{
-    public static ArrayList<ArrayList<String>> parameters;
+    public ArrayList<ArrayList<String>> parameters;
     
     public SProcedure(ArrayList<ArrayList<String>> _parameters){
         this.parameters = _parameters;

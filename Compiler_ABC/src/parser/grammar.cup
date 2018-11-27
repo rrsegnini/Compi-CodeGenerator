@@ -240,7 +240,8 @@ function_body ::= constants_local globals_local statements
                  |globals_local constants_local statements 
                 | globals_local statements 
                 | constants_local statements 
-                | statements;
+                | statements
+                ;
 
 globals_local ::= VAR globals_body_local ;
 
@@ -250,7 +251,8 @@ globals_body_local ::= /*epsilon*/ | IDENTIFIER:i  {:SemanticActions.rememberVar
                 ;
 constants_local ::= CONST constants_body_local;
 
-constants_body_local ::= IDENTIFIER:i EQUAL  {:SemanticActions.rememberConst(i.toString());:}  literal_const_local SEMI constants_body_local
+constants_body_local ::= IDENTIFIER:i EQUAL  {:SemanticActions.rememberConst(i.toString());:}  
+                                literal_const_local SEMI constants_body_local
                     |  IDENTIFIER EQUAL error:e SEMI {: parser.report_error("Error al declarar una constante\n", e);:}
                     | /*epsilon*/;
 

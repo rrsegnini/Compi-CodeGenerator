@@ -5,9 +5,9 @@ PROGRAM Prueba
 
 VAR
 
- numero,limite,contador:int;  // todo esta bien
+ numeroo,limite,contador:int;  // todo esta bien
 
-FUNCTION test():int
+FUNCTION test():char
 VAR
 i,a,x:char;
 CONST

@@ -15,7 +15,7 @@ import parser.sym;
 public class SymbolTable implements ISymbolTable{
     public boolean symbolExists(String identifier){
         //boolean symbolExists = ST.get(identifier) != null;
-        return LocalsST.containsKey(identifier) || GlobalsST.containsKey(identifier);
+        return LocalsST.containsKey(identifier) | GlobalsST.containsKey(identifier);
     }
     
     public boolean localSymbolExists(String identifier){
@@ -29,7 +29,7 @@ public class SymbolTable implements ISymbolTable{
     }
     
     public Symbol getLocalSymbol(String identifier){
-        return (Symbol)GlobalsST.get(identifier);
+        return (Symbol)LocalsST.get(identifier);
     }
     
     public Symbol getGlobalSymbol(String identifier){

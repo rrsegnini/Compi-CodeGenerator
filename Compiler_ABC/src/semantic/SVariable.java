@@ -10,7 +10,7 @@ package semantic;
  * @author CASA
  */
 public class SVariable extends Symbol{
-    public static String type;
+    public String type;
     
     public SVariable(String type){
         this.type = type;
