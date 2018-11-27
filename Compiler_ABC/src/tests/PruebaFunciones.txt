@@ -5,7 +5,7 @@ PROGRAM Prueba
 
 VAR
 
- numeroo,limite,contador:int;  // todo esta bien
+ a,numeroo,limite,contador:int;  // todo esta bien
 
 FUNCTION test():char
 VAR

@@ -53,7 +53,7 @@ public class SemanticActions {
         stack.push(SR_Id);
     }
 
-    public static void insertGlobalVarST() {
+    public static void insertGlobalVarST(int line) {
         SemanticRegister SR_Type = stack.pop();
         while (stack.top() != null) {
             SemanticRegister SR_DataObject = stack.pop();
@@ -61,7 +61,8 @@ public class SemanticActions {
             SymbolTable ts = new SymbolTable();
             
             if (ts.symbolExists(SR_Type.getToken())) {
-                System.out.println("ERROR LA VARIABLE " +SR_Type.getToken() + "FUE DECLARADA PREVIAMENTE" );
+                System.err.println("ERROR EN LA LINEA: " + line + "LA VARIABLE " +SR_Type.getToken() + "FUE DECLARADA PREVIAMENTE" );
+                //System.out.println("ERROR LA VARIABLE " +SR_Type.getToken() + "FUE DECLARADA PREVIAMENTE" );
             } else {
                 ts.putGlobal(SR_DataObject.getToken(), var);
             }
@@ -72,7 +73,7 @@ public class SemanticActions {
 
     }
 
-    public static void insertLocalVarST() {
+    public static void insertLocalVarST(int line) {       
         SemanticRegister SR_Type = stack.pop();
 
         while (stack.top() != null) {
@@ -81,7 +82,7 @@ public class SemanticActions {
             SVariable var = new SVariable(token);
             SymbolTable ts = new SymbolTable();
             if (ts.symbolExists(SR_Type.getToken())) {
-                System.out.println("ERROR LA VARIABLE " +SR_Type.getToken() + "FUE DECLARADA PREVIAMENTE" );
+                System.err.println("ERROR EN LA LINEA " + line + ": " + SR_Type.getToken() + "FUE DECLARADA PREVIAMENTE" );
             } else {
                 ts.putLocal(SR_DataObject.getToken(), var);
             }
@@ -91,12 +92,12 @@ public class SemanticActions {
 
     }
 
-    public static void insertGlobalConstTS(String _value) {
+    public static void insertGlobalConstTS(String _value,int line) {
         SemanticRegister constantSR = stack.pop();
         SConstant constant = new SConstant(_value);
         SymbolTable ts = new SymbolTable();
         if (ts.symbolExists(constantSR.getToken())) {
-                System.out.println("ERROR LA VARIABLE " +constantSR.getToken() + "FUE DECLARADA PREVIAMENTE" );
+                System.err.println("ERROR EN LA LINEA " + line  + ": LA VARIABLE " +constantSR.getToken() + "FUE DECLARADA PREVIAMENTE" );
             } else {
                 ts.putGlobal(constantSR.getToken(), constant);
         }
@@ -105,19 +106,19 @@ public class SemanticActions {
 
     }
 
-    public static void insertLocalConstTS(String _value) {
+    public static void insertLocalConstTS(String _value,int line) {
         SemanticRegister constantSR = stack.pop();
         SConstant constant = new SConstant(_value);
         SymbolTable ts = new SymbolTable();
         if (ts.symbolExists(constantSR.getToken())) {
-                System.out.println("ERROR LA VARIABLE " +constantSR.getToken() + "FUE DECLARADA PREVIAMENTE" );
+                System.err.println("ERROR EN LA LINEA " +  line + ": LA VARIABLE " +constantSR.getToken() + "FUE DECLARADA PREVIAMENTE" );
             } else {
                 ts.putLocal(constantSR.getToken(), constant);
         }
 
     }
 
-    public static void insertFunctionST() {
+    public static void insertFunctionST(int line) {
 
         ArrayList parameters = new ArrayList<>();
         SemanticRegister SR_DataObject = null;
@@ -138,10 +139,11 @@ public class SemanticActions {
                                         parameters);
                 SymbolTable ST = new SymbolTable();
                 if (ST.symbolExists(SR_DataObject.getToken())) {
-                    System.out.println("ERROR LA VARIABLE " +SR_DataObject.getToken() + "FUE DECLARADA PREVIAMENTE" );
-                } else {
-                    ST.putGlobal(SR_DataObject.getToken(), function);
-                    }
+                System.out.println("ERROR EN LA LINEA " + line +   ": LA VARIABLE " +SR_DataObject.getToken() + "FUE DECLARADA PREVIAMENTE" );
+            } else {
+                ST.putGlobal(SR_DataObject.getToken(), function);
+        }
+
             }
 
 
@@ -159,7 +161,7 @@ public class SemanticActions {
 
 
 
-    public static void insertProcedureST() {
+    public static void insertProcedureST(int line) {
 
         ArrayList parameters = new ArrayList<>();
         SemanticRegister SR_DataObject = null;
@@ -210,11 +212,11 @@ public class SemanticActions {
         stack.push(SR_Const);
     }
 
-    public static void rememberVariable(String _token) {
+    public static void rememberVariable(String _token,int line) {
         // VERIFY IN SYMBOL'S TABLE
         SymbolTable ST = new SymbolTable();
         if (!ST.symbolExists(_token)) {
-            System.out.println("ERROR LA VARIABLE " + _token + " NO HA SIDO DECLARADA" );
+            System.err.println("ERROR EN LA LINEA " + line + ": LA VARIABLE " + _token + " NO HA SIDO DECLARADA" );
         }
 
         SemanticRegister SR_Var = new SemanticRegister(SR_Name.DATA_OBJECT,_token,ValueType.VAR);
