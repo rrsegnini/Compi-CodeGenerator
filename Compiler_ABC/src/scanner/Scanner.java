@@ -79,7 +79,7 @@ public class Scanner {
             
             Object result = p.parse().value;
             SymbolTable ST = new SymbolTable();
-            System.out.println("\t TABLA DE SIMBOLOS " + ST.toString());
+            System.out.println("TABLA DE SIMBOLOS " + ST.toString());
             
            
            

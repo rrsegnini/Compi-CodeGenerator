@@ -45,6 +45,9 @@ public class SymbolTable implements ISymbolTable{
     }
     
     public void resetLocalsST(){
+        if (!LocalsST.isEmpty()){
+            System.out.println("TABLA DE SIMBOLOS LOCAL: " + LocalsST.toString());
+        }
         LocalsST.clear();
     }
 
