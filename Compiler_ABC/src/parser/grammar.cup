@@ -351,7 +351,9 @@ exp2 ::= BOOLEAN_OPERATOR:op {:SemanticActions.rememberOperator(op.toString());:
             | /*epsilon*/ ;
 
 
-fun_call ::= IDENTIFIER  OPEN_PARENTHESIS exp {:SemanticActions.binaryEvaluation();:} 
+fun_call ::= IDENTIFIER:i {:SemanticActions.functionIdError(i.toString());:}  
+
+          OPEN_PARENTHESIS exp {:SemanticActions.binaryEvaluation();:} 
               parameter_list_call CLOSE_PARENTHESIS SEMI
         | IDENTIFIER OPEN_PARENTHESIS CLOSE_PARENTHESIS SEMI
         | IDENTIFIER OPEN_PARENTHESIS error:e CLOSE_PARENTHESIS SEMI {: parser.report_error("Error en los parametros al llamar la funcion\n", e); :}

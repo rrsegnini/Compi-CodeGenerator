@@ -138,15 +138,23 @@ public class SemanticActions {
                                         parameters);
                 SymbolTable ST = new SymbolTable();
                 if (ST.symbolExists(SR_DataObject.getToken())) {
-                System.out.println("ERROR LA VARIABLE " +SR_DataObject.getToken() + "FUE DECLARADA PREVIAMENTE" );
-            } else {
-                ST.putGlobal(SR_DataObject.getToken(), function);
-        }
+                    System.out.println("ERROR LA VARIABLE " +SR_DataObject.getToken() + "FUE DECLARADA PREVIAMENTE" );
+                } else {
+                    ST.putGlobal(SR_DataObject.getToken(), function);
+                    }
             }
 
 
         }
 
+    }
+    
+    public static void functionIdError(String _value) {
+        SymbolTable ts = new SymbolTable();
+        if (!ts.symbolExists(_value)) {
+                System.out.println("ERROR LA VARIABLE " + _value + " NO HA SIDO DECLARADA" );
+        }
+    
     }
 
 
@@ -170,7 +178,11 @@ public class SemanticActions {
             }else{
                 SProcedure procedure = new SProcedure(parameters);
                 SymbolTable ST = new SymbolTable();
-                ST.putGlobal(SR_DataObject.getToken(), procedure);
+                if (ST.symbolExists(SR_DataObject.getToken())) {
+                    System.out.println("ERROR LA VARIABLE " +SR_DataObject.getToken() + "FUE DECLARADA PREVIAMENTE" );
+                } else {
+                    ST.putGlobal(SR_DataObject.getToken(), procedure);
+                    }
             }
 
 
@@ -214,74 +226,86 @@ public class SemanticActions {
         stack.push(SR_Op);
     }
 
+    
+    
     public static void binaryEvaluation() {
+        SemanticActions.binaryEvaluation(false);
+    }
+    
+    
+    public static void binaryEvaluation(boolean _isAParameter) {
+        if (_isAParameter) {
+            
+        }else {
+ 
 
+            SemanticRegister SR_DO1 = stack.pop();
+            SemanticRegister SR_OP = stack.pop();
 
+            //Eval unaria i++
+            if (stack.top().getDescrp().equals(SR_Name.DATA_OBJECT) && SR_OP.getDescrp().equals(SR_Name.OPERATOR)
+                    && SR_DO1.getDescrp().equals(SR_Name.OPERATOR)    ) {
+                SemanticRegister SR_DO = stack.pop();
+                String op1 = SR_DO1.getToken();
+                String op2 = SR_OP.getToken();
+                String var1 =  SR_DO.getToken();
 
-        SemanticRegister SR_DO1 = stack.pop();
-        SemanticRegister SR_OP = stack.pop();
+                SemanticActions.generateUnEvalCode( var1, op1, op2);
 
-        //Eval unaria i++
-        if (stack.top().getDescrp().equals(SR_Name.DATA_OBJECT) && SR_OP.getDescrp().equals(SR_Name.OPERATOR)
-                && SR_DO1.getDescrp().equals(SR_Name.OPERATOR)    ) {
-            SemanticRegister SR_DO = stack.pop();
-            String op1 = SR_DO1.getToken();
-            String op2 = SR_OP.getToken();
-            String var1 =  SR_DO.getToken();
+            } else {
+                SemanticRegister SR_DO2 = stack.pop();
 
-            SemanticActions.generateUnEvalCode( var1, op1, op2);
+                String resultStr = "ax";
 
-        } else {
-            SemanticRegister SR_DO2 = stack.pop();
+                //verify types in SYMBOL'S TABLE
 
-            String resultStr = "ax";
+                /*
+                Los DO son de tipo constante los 2?{
+                Si: calcular el resultado //constant Folding Ej: 4+5
+                Crear RS_DO de tipo constante NO: generar el código para la operación
+                Crear RS_DO de tipo dirección con el lugar donde quedo el resultado,
+                puede ser una variable temporal o un registro
+                */
 
-            //verify types in SYMBOL'S TABLE
+                if (SR_DO1 != null && SR_DO2 != null){
+                    // Executes Constant Folding
+                    if (SR_DO1.getType().equals(ValueType.CONST) &&
+                            SR_DO2.getType().equals(ValueType.CONST) ) {
+                            int res = SemanticActions.constFoldint(SR_DO2.getToken(), SR_DO1.getToken(),
+                                    SR_OP.getToken());
+                            resultStr = Integer.toString(res);
+                    } else {
+                        //GENERATES CODE FOR EXP
+                        //generate code where SR_DO2 is the dividend and SR_DO1 is the divisor in div
+                        SemanticActions.generateEvalCode(SR_DO2.getToken(), SR_DO1.getToken(), SR_OP.getToken());
 
-            /*
-            Los DO son de tipo constante los 2?{
-            Si: calcular el resultado //constant Folding Ej: 4+5
-            Crear RS_DO de tipo constante NO: generar el código para la operación
-            Crear RS_DO de tipo dirección con el lugar donde quedo el resultado,
-            puede ser una variable temporal o un registro
-            */
+                    }
 
-            if (SR_DO1 != null && SR_DO2 != null){
-                // Executes Constant Folding
-                if (SR_DO1.getType().equals(ValueType.CONST) &&
-                        SR_DO2.getType().equals(ValueType.CONST) ) {
-                        int res = SemanticActions.constFoldint(SR_DO2.getToken(), SR_DO1.getToken(),
-                                SR_OP.getToken());
-                        resultStr = Integer.toString(res);
-                } else {
-                    //GENERATES CODE FOR EXP
-                    //generate code where SR_DO2 is the dividend and SR_DO1 is the divisor in div
-                    SemanticActions.generateEvalCode(SR_DO2.getToken(), SR_DO1.getToken(), SR_OP.getToken());
+                    // if :=
+                    if (stack.top().getDescrp().equals(SR_Name.OPERATOR)) {
+                        SemanticRegister SR_Object = new SemanticRegister(SR_Name.DATA_OBJECT,resultStr);
+                        stack.push(SR_Object);
+                        SemanticActions.assignVar();
+
+                    } else {
+                        SemanticRegister SR_Object = new SemanticRegister(SR_Name.DATA_OBJECT,resultStr);
+                        stack.push(SR_Object);
+                    }
+
 
                 }
 
-                // if :=
-                if (stack.top().getDescrp().equals(SR_Name.OPERATOR)) {
-                    SemanticRegister SR_Object = new SemanticRegister(SR_Name.DATA_OBJECT,resultStr);
-                    stack.push(SR_Object);
-                    SemanticActions.assignVar();
-
-                } else {
-                    SemanticRegister SR_Object = new SemanticRegister(SR_Name.DATA_OBJECT,resultStr);
-                    stack.push(SR_Object);
-                }
 
 
             }
 
-
-
         }
-
-
     }
 
-
+    
+    public static void parameterErrorVerification(String _token) {
+        
+    }
 
 
     ////////////////////////////////////////////////////////////////////////////
