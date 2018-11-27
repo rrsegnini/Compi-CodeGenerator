@@ -26,16 +26,11 @@ BEGIN
         END
 END
 
-FUNCTION test2():int
-VAR
-num,prueba,hola:char;
-CONST
-pi=3.48;
-
+FUNCTION test2(char x, int y):int
 BEGIN
         WHILE (a>8) DO
 		BEGIN
-		   i:=x+1;
+		   i:=x+y;
         END
 
         WHILE (a>8) DO
@@ -44,6 +39,18 @@ BEGIN
 		   i:=x+1;
         END
 END
+
+
+FUNCTION funcion3( int x, int y): int // son diferentes a las de la primer funcion
+BEGIN
+ x := x - y;
+END
+
+FUNCTION funcion4(int a, int b): int // son diferentes a las globales
+BEGIN
+ c := a * b; 
+END
+
 
 BEGIN
 END

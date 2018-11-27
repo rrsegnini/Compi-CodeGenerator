@@ -4,21 +4,32 @@ JNGE exit_label1
 mov ax,x
 add ax,1
 mov i,ax
+JMPwhile_label1
+exit_label1:
 while_label2:
 cmp 8,a
 JNGE exit_label2
 mov ax,x
 add ax,1
 mov i,ax
+JMPwhile_label2
+exit_label2:
 while_label3:
 cmp 8,a
 JNGE exit_label3
 mov ax,x
-add ax,1
+add ax,y
 mov i,ax
+JMPwhile_label3
+exit_label3:
 while_label4:
 cmp 8,a
 JNGE exit_label4
 mov ax,x
 add ax,1
 mov i,ax
+JMPwhile_label4
+exit_label4:
+mov ax,a
+mul b
+mov c,ax

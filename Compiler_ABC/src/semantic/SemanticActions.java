@@ -277,14 +277,14 @@ public class SemanticActions {
         // 2 -> value2beAssign
         String value2beAssign = SR_DO2_value2beAssign.getToken();
         String var = SR_DO1_var.getToken();
-
+           
         try {
             SemanticActions.assignmentCode(var, value2beAssign);
         } catch (IOException ex) {
             Logger.getLogger(SemanticActions.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-
+        
     }
 
 
@@ -337,7 +337,8 @@ public class SemanticActions {
         try {
             SemanticRegister SR_IF = stack.search(SR_Name.IF);
             // writes the else label
-            writer.write(SR_IF.getLabel2() +":"+"\n");
+            writer.write(SR_IF.getLabel2() +":"+"\n"); 
+            stack.pop(); //Saca el SR_IF
 
         }catch (Exception e) {
         }
@@ -377,17 +378,19 @@ public class SemanticActions {
         SemanticRegister SR_OP = stack.pop();
         SemanticRegister SR_DO2 = stack.pop();
         SemanticActions.generateCondCode(SR_DO1.getToken(), SR_DO2.getToken(), SR_OP.getToken(), exitLabel);
+        
+        //System.out.println("EL STACK AL FINAL DEL WHILE: " + stack);
 
     }
 
     public static void endWhile() {
         try {
-            SemanticRegister SR_IF = stack.search(SR_Name.IF);
+            SemanticRegister SR_IF = stack.search(SR_Name.WHILE);
             //writes the jump to the start_while label
             writer.write("JMP"+SR_IF.getLabel1() +"\n");
             // writes the e label
             writer.write(SR_IF.getLabel2() +":"+"\n");
-
+            stack.pop(); //Saca la el SR_WHILE    
         }catch (Exception e) {
 
         }
