@@ -277,7 +277,7 @@ public class SemanticActions {
         // 2 -> value2beAssign
         String value2beAssign = SR_DO2_value2beAssign.getToken();
         String var = SR_DO1_var.getToken();
-           
+
         try {
             SemanticActions.assignmentCode(var, value2beAssign);
         } catch (IOException ex) {

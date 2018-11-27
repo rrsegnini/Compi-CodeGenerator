@@ -43,7 +43,7 @@ END
 
 FUNCTION funcion3( int x, int y): int // son diferentes a las de la primer funcion
 BEGIN
- x := x - y;
+ xssss := x - y;
 END
 
 FUNCTION funcion4(int a, int b): int // son diferentes a las globales
