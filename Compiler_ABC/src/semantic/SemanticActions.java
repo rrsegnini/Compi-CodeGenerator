@@ -59,7 +59,14 @@ public class SemanticActions {
             SemanticRegister SR_DataObject = stack.pop();
             SVariable var = new SVariable(SR_Type.getToken());
             SymbolTable ts = new SymbolTable();
-            ts.putGlobal(SR_DataObject.getToken(), var);
+            
+            if (ts.symbolExists(SR_Type.getToken())) {
+                System.out.println("ERROR LA VARIABLE " +SR_Type.getToken() + "FUE DECLARADA PREVIAMENTE" );
+            } else {
+                ts.putGlobal(SR_DataObject.getToken(), var);
+            }
+            
+            
 
         }
 
@@ -73,7 +80,12 @@ public class SemanticActions {
             String token = SR_Type.getToken();
             SVariable var = new SVariable(token);
             SymbolTable ts = new SymbolTable();
-            ts.putLocal(SR_DataObject.getToken(), var);
+            if (ts.symbolExists(SR_Type.getToken())) {
+                System.out.println("ERROR LA VARIABLE " +SR_Type.getToken() + "FUE DECLARADA PREVIAMENTE" );
+            } else {
+                ts.putLocal(SR_DataObject.getToken(), var);
+            }
+            
 
         }
 
@@ -83,7 +95,13 @@ public class SemanticActions {
         SemanticRegister constantSR = stack.pop();
         SConstant constant = new SConstant(_value);
         SymbolTable ts = new SymbolTable();
-        ts.putGlobal(constantSR.getToken(), constant);
+        if (ts.symbolExists(constantSR.getToken())) {
+                System.out.println("ERROR LA VARIABLE " +constantSR.getToken() + "FUE DECLARADA PREVIAMENTE" );
+            } else {
+                ts.putGlobal(constantSR.getToken(), constant);
+        }
+            
+        
 
     }
 
@@ -91,7 +109,11 @@ public class SemanticActions {
         SemanticRegister constantSR = stack.pop();
         SConstant constant = new SConstant(_value);
         SymbolTable ts = new SymbolTable();
-        ts.putLocal(constantSR.getToken(), constant);
+        if (ts.symbolExists(constantSR.getToken())) {
+                System.out.println("ERROR LA VARIABLE " +constantSR.getToken() + "FUE DECLARADA PREVIAMENTE" );
+            } else {
+                ts.putLocal(constantSR.getToken(), constant);
+        }
 
     }
 
@@ -115,7 +137,11 @@ public class SemanticActions {
                 SFunction function = new SFunction(SR_ReturnType.getToken(),
                                         parameters);
                 SymbolTable ST = new SymbolTable();
+                if (ST.symbolExists(SR_DataObject.getToken())) {
+                System.out.println("ERROR LA VARIABLE " +SR_DataObject.getToken() + "FUE DECLARADA PREVIAMENTE" );
+            } else {
                 ST.putGlobal(SR_DataObject.getToken(), function);
+        }
             }
 
 
